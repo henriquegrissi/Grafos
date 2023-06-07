@@ -22,12 +22,16 @@
  * SOFTWARE.
  */
 
+import java.util.Comparator;
+
 /** Classe Vertice para um grafo */
 public class Vertice {
 
     private ABB<Aresta> arestas;
     private final int id;
     private boolean visitado;
+    private String nome;
+    private double latitude, longitude;
 
     /**
      * Construtor para criação de vértice identificado
@@ -36,9 +40,22 @@ public class Vertice {
      */
     public Vertice(int id) {
         this.id = id;
+        init("cidade", 0, 0);
+    }
+
+    public Vertice(int id, String nome, double latitude, double longitude) {
+        this.id = id;
+        init(nome, latitude, longitude);
+    }
+
+    public void init(String nome, double latitude, double longitude) {
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.nome = nome;
         this.arestas = new ABB<Aresta>();
         this.visitado = false;
     }
+
 
     /**
      * Retorna o id do vértice, caso seja necessário para verificações próprias
@@ -147,5 +164,22 @@ public class Vertice {
             }
         }
         return vizinhosList;
+    }
+
+    public double getLatitude() {
+        return this.latitude;
+    }
+
+    public double getLongitude() {
+        return this.longitude;
+    }
+
+    public double calcularDistancia(double latitude, double longitude) {
+        double latitudeCalculo, longitudeCalculo;
+
+        latitudeCalculo = (this.latitude - latitude) * 111.1;
+        longitudeCalculo = (this.longitude - longitude) * 96.2;
+
+        return Math.sqrt(Math.pow(latitudeCalculo,2) + (Math.pow(longitudeCalculo,2)));
     }
 }

@@ -4,6 +4,9 @@ import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.Scanner;
 
 public class GrafoMutavel extends Grafo {
@@ -20,11 +23,25 @@ public class GrafoMutavel extends Grafo {
      * @return TRUE se houve a inclusão do vértice, FALSE se já existia vértice com
      *         este id
      */
+    public boolean addVertice(int id, String nome, double latitude, double longitude) {
+        Vertice novo = new Vertice(id, nome, latitude, longitude);
+        return this.vertices.add(id, novo);
+    }    
+    
+
+    /**
+     * Adiciona um vértice com o id especificado. Ignora a ação e retorna false se
+     * já existir um vértice com este id
+     * 
+     * @param id O identificador do vértice a ser criado/adicionado
+     * @return TRUE se houve a inclusão do vértice, FALSE se já existia vértice com
+     *         este id
+     */
     public boolean addVertice(int id) {
         Vertice novo = new Vertice(id);
         return this.vertices.add(id, novo);
     }    
-    
+
     public Vertice removeVertice(int id) {
         Vertice vertice = vertices.find(id);
         if (vertice != null) {
@@ -79,33 +96,59 @@ public class GrafoMutavel extends Grafo {
      * @throws EOFException
      */
     public void carregar(String nomeArquivo) throws FileNotFoundException, EOFException {
-        File file = new File("./codigo/projeto2-grafos/arquivos/" + nomeArquivo + ".csv");
+        File file = new File("./codigo/projeto2-grafos/arquivos/br.csv");
         Scanner entrada = new Scanner(file, "UTF-8");
 
         String leitura = entrada.nextLine();
-        String vertices, linhaArestas;
-        String[] array_vertice, array_aresta, arestas;
-        int origem, destino, peso;
+        String nomeVertive;
+        int id, origem, destino, peso;
+        double latitude, longitude;
+        LinkedList<Vertice> listaDeVertices = new LinkedList<Vertice>();
+        HashMap<Vertice, Double> listaDeCidadesMaisPerto = new HashMap<Vertice, Double>();
 
-        vertices = leitura.split(";")[1];
-        array_vertice = vertices.split(",");
+        id = 0;
+        // preenchendo a lista de cidades
+        while (leitura != null) {
+            id++;
+            nomeVertive = leitura.split(";")[0];
+            latitude  = Integer.parseInt(leitura.split(";")[1]);
+            longitude = Integer.parseInt(leitura.split(";")[2]);
 
-        for (int i = 0; i < array_vertice.length; i++) {
-            this.addVertice(Integer.parseInt(array_vertice[i]));
+            Vertice newVertice = new Vertice(id, nomeVertive, latitude, longitude);
+            listaDeVertices.add(newVertice);
+
+            leitura = entrada.nextLine();
         }
+        
+        // percorrendo cada vertice da lista e adiciona a distancia com o vertice
+        for (Vertice vertice : listaDeVertices) {
+            listaDeCidadesMaisPerto = null;
+            for (Vertice outroVertice : listaDeVertices) {
+                double distancia = vertice.calcularDistancia(outroVertice.getLatitude(), outroVertice.getLongitude());
+                listaDeCidadesMaisPerto.put(outroVertice, distancia);
+            }
 
-        leitura = entrada.nextLine();
+            // ordena a lista de vertices
+            Collections.sort(listaDeVertices, (a,b) -> {
+                            double distanciaA, distanciaB;
+                            distanciaA = vertice.calcularDistancia(a.getLatitude(), a.getLongitude());
+                            distanciaB = vertice.calcularDistancia(b.getLatitude(), b.getLongitude());
+                            return Double.compare(distanciaA, distanciaB); 
+            });
 
-        linhaArestas = leitura.split(";")[1];
-        array_aresta = linhaArestas.split(",");
-
-        for (int j = 0; j < array_aresta.length; j++) {
-            arestas = array_aresta[j].split("-");
-            origem = Integer.parseInt(arestas[0]);
-            destino = Integer.parseInt(arestas[1]);
-            peso = Integer.parseInt(arestas[2]);
-
-            this.addAresta(origem, destino, peso);
+            // adicionando as 4 cidades mais proxima da que estamos vendo
+            for (Vertice melhoVerticeDeDistancia : listaDeCidadesMaisPerto.keySet()) {
+                for (int i=0; i<4 ;i++){
+                    double pesoConverte = 0.0;
+                    
+                    origem = vertice.getId();
+                    destino = melhoVerticeDeDistancia.getId();
+                    pesoConverte = listaDeCidadesMaisPerto.get(melhoVerticeDeDistancia);
+                    peso = (int) pesoConverte;
+        
+                    this.addAresta(origem, destino, peso);
+                }
+            }
         }
         entrada.close();
     }
