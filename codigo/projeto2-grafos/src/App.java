@@ -47,11 +47,8 @@ public class App {
             limparTela();
             switch (opcao) {
                 case 1:
-                    System.out.println("Nome do arquivo a ser carregado: ");
-                    nomeArquivo = teclado.nextLine();
-
                     try {
-                        grafoMutavel.carregar(nomeArquivo);
+                        grafoMutavel.carregar();
                     } catch (FileNotFoundException e) {
                         System.out.println("Arquivo não existente, você deve primeiro gerar e salvar o grafo " + e);
                     }

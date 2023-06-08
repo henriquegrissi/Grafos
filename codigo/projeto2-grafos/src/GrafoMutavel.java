@@ -95,37 +95,41 @@ public class GrafoMutavel extends Grafo {
      * @throws FileNotFoundException
      * @throws EOFException
      */
-    public void carregar(String nomeArquivo) throws FileNotFoundException, EOFException {
+    public void carregar() throws FileNotFoundException, EOFException {
         File file = new File("./codigo/projeto2-grafos/arquivos/br.csv");
         Scanner entrada = new Scanner(file, "UTF-8");
 
         String leitura = entrada.nextLine();
         String nomeVertive;
-        int id, origem, destino, peso;
+        int id;
         double latitude, longitude;
         LinkedList<Vertice> listaDeVertices = new LinkedList<Vertice>();
-        HashMap<Vertice, Double> listaDeCidadesMaisPerto = new HashMap<Vertice, Double>();
+        HashMap<Vertice, Double> listaDeCidadesMaisPerto;
 
         id = 0;
         // preenchendo a lista de cidades
-        while (leitura != null) {
+        while (id < 115) {
             id++;
-            nomeVertive = leitura.split(";")[0];
-            latitude  = Integer.parseInt(leitura.split(";")[1]);
-            longitude = Integer.parseInt(leitura.split(";")[2]);
+            nomeVertive = leitura.split(",")[0];
+            latitude  = Double.parseDouble(leitura.split(",")[1]);
+            longitude = Double.parseDouble(leitura.split(",")[2]);
 
             Vertice newVertice = new Vertice(id, nomeVertive, latitude, longitude);
+            this.addVertice(id, nomeVertive, latitude, longitude);
             listaDeVertices.add(newVertice);
 
             leitura = entrada.nextLine();
         }
+        entrada.close();
         
         // percorrendo cada vertice da lista e adiciona a distancia com o vertice
         for (Vertice vertice : listaDeVertices) {
-            listaDeCidadesMaisPerto = null;
+            listaDeCidadesMaisPerto = new HashMap<Vertice, Double>(200);
             for (Vertice outroVertice : listaDeVertices) {
-                double distancia = vertice.calcularDistancia(outroVertice.getLatitude(), outroVertice.getLongitude());
-                listaDeCidadesMaisPerto.put(outroVertice, distancia);
+                if (outroVertice.getId()!=vertice.getId()){
+                    double distancia = vertice.calcularDistancia(outroVertice.getLatitude(), outroVertice.getLongitude());
+                    listaDeCidadesMaisPerto.put(outroVertice, distancia);
+                }
             }
 
             // ordena a lista de vertices
@@ -137,16 +141,27 @@ public class GrafoMutavel extends Grafo {
             });
 
             // adicionando as 4 cidades mais proxima da que estamos vendo
-            for (Vertice melhoVerticeDeDistancia : listaDeCidadesMaisPerto.keySet()) {
-                for (int i=0; i<4 ;i++){
-                    double pesoConverte = 0.0;
-                    
-                    origem = vertice.getId();
-                    destino = melhoVerticeDeDistancia.getId();
-                    pesoConverte = listaDeCidadesMaisPerto.get(melhoVerticeDeDistancia);
-                    peso = (int) pesoConverte;
-        
+            for (int i=0; i<4 ;i++){
+                Vertice menorVertice = null;
+                int origem = 0, destino = 0, peso = 0;
+                for (Vertice melhoVerticeDeDistancia : listaDeCidadesMaisPerto.keySet()) {
+                    double distancia = Double.MAX_VALUE;
+
+                    // verifica qual o menor caminho(a cidade mais perto)
+                    if (listaDeCidadesMaisPerto.get(melhoVerticeDeDistancia) < distancia){
+                        menorVertice = melhoVerticeDeDistancia;
+                        
+                        origem = vertice.getId();
+                        destino = melhoVerticeDeDistancia.getId();
+                        distancia = listaDeCidadesMaisPerto.get(melhoVerticeDeDistancia);
+                        peso = (int) distancia;
+                    }
+                }
+                // verifica se tem algum valor, caso tenha cria uma aresta para os vertices
+                if(origem != 0 && destino != 0){
                     this.addAresta(origem, destino, peso);
+                    // remove da lista a cidade já usada
+                    listaDeCidadesMaisPerto.remove(menorVertice);
                 }
             }
         }

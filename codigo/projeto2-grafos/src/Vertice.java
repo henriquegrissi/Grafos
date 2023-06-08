@@ -175,7 +175,7 @@ public class Vertice {
     }
 
     public double calcularDistancia(double latitude, double longitude) {
-        double latitudeCalculo, longitudeCalculo;
+        double latitudeCalculo = 0, longitudeCalculo = 0;
 
         latitudeCalculo = (this.latitude - latitude) * 111.1;
         longitudeCalculo = (this.longitude - longitude) * 96.2;
