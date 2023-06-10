@@ -1,4 +1,5 @@
 import java.io.FileNotFoundException;
+import java.util.LinkedList;
 import java.util.Scanner;
 
 public class App {
@@ -26,6 +27,7 @@ public class App {
         System.out.println("6 - Gerar Subgrafo ");
         System.out.println("7 - Fazer pesquisa DFS");
         System.out.println("8 - Fazer pesquisa BFS");
+        System.out.println("9 - Encontrar caminho minimo");
         System.out.println("0 - Sair");
         System.out.print("\nDigite sua opção: ");
         int opcao = Integer.parseInt(teclado.nextLine());
@@ -143,10 +145,34 @@ public class App {
                     System.out.println("Retorno da pesquisa bfs");
                     System.out.println(grafo.bfs(Integer.parseInt(verticeEntradaTeclado)).toString());
                     break;
+                case 9:
+                    if(grafoMutavel.vertices.size() == 0){
+                        System.out.println("Selecione primeiro a opção 1 ou 3 para gerar um grafo");
+                        break;
+                    }
+                    caminhoMinimo(grafoMutavel);
+                    break;
             }
             pausa();
         } while (opcao != 0);
         System.out.println("Saindo...");
+    }
+
+    private static void caminhoMinimo(GrafoMutavel grafoMutavel) {
+        System.out.println("Digite o nome do vértice de origem: ");
+                    String verticeOrigem = teclado.nextLine();
+                    System.out.println("Digite o nome do vértice de destino: ");
+                    String verticeDestino = teclado.nextLine();
+
+                    LinkedList<Integer> caminhoMinimo = new LinkedList<Integer>();
+                    
+                    caminhoMinimo = grafoMutavel.Dijkstra(verticeOrigem, verticeDestino);
+                    if (caminhoMinimo != null){
+                        for(int i : caminhoMinimo){
+                            System.out.println(i);
+                            System.out.println("-");
+                        }
+                    }
     }
 
     private static void gerarSubGrafo(GrafoMutavel grafo) {

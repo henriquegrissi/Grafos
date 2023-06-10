@@ -23,6 +23,7 @@
  */
 
 import java.util.Comparator;
+import java.util.LinkedList;
 
 /** Classe Vertice para um grafo */
 public class Vertice {
@@ -166,6 +167,21 @@ public class Vertice {
         return vizinhosList;
     }
 
+    public LinkedList<Integer> verticesVizinhos() {
+        LinkedList<Integer> vizinhosList = new LinkedList<Integer>();
+
+        if (arestas.size() != 0) {
+            Aresta[] arestas;
+            arestas = new Aresta[this.arestas.size()];
+            arestas = this.arestas.allElements(arestas);
+            for (int i = 0; i < this.arestas.size(); i++) {
+                vizinhosList.add(arestas[i].destino());
+            }
+        }
+        return vizinhosList;
+    }
+
+
     public double getLatitude() {
         return this.latitude;
     }
@@ -181,5 +197,9 @@ public class Vertice {
         longitudeCalculo = (this.longitude - longitude) * 96.2;
 
         return Math.sqrt(Math.pow(latitudeCalculo,2) + (Math.pow(longitudeCalculo,2)));
+    }
+
+    public Object getNome() {
+        return this.nome;
     }
 }
