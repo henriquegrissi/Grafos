@@ -190,13 +190,20 @@ public class Vertice {
         return this.longitude;
     }
 
-    public double calcularDistancia(double latitude, double longitude) {
-        double latitudeCalculo = 0, longitudeCalculo = 0;
+    public double calcularDistancia(double latitude2, double longitude2) {
+        double latitude1 = this.latitude;
+        double longitude1 = this.longitude;
 
-        latitudeCalculo = (this.latitude - latitude) * 111.1;
-        longitudeCalculo = (this.longitude - longitude) * 96.2;
+        double diferencaLatitudes = Math.toRadians(latitude2 - latitude1);
+        double diferencaLongitudes = Math.toRadians(longitude2 - longitude1);
 
-        return Math.sqrt(Math.pow(latitudeCalculo,2) + (Math.pow(longitudeCalculo,2)));
+        latitude1 = Math.toRadians(latitude1);
+        latitude2 = Math.toRadians(latitude2);
+
+        double formulaHaversine = Math.sqrt(Math.pow(Math.sin(diferencaLatitudes/2), 2) + Math.cos(latitude1) * Math.cos(latitude2) * Math.pow(Math.sin(diferencaLongitudes/2), 2));
+        double distancia = 2 * 6371 * Math.asin(formulaHaversine);
+        
+        return distancia;
     }
 
     public Object getNome() {
