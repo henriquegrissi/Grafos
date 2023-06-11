@@ -297,8 +297,8 @@ public class GrafoTest {
     @Test
     public void deveRetornarCaminhoMinimoEntreDoisVertices(){
         GrafoMutavel grafoMut= new GrafoMutavel("grafoMut");
-        grafoMut.dijkstra("Campinas", "Sao Paulo");
-        assertEquals("- 15 - 60 - 65 - 73 - 94 - 44 - 82 - 87 - 90 - 42 - 28 - 1;", grafoMut.toString());  
+        
+        assertEquals("- 15 - 60 - 65 - 73 - 94 - 44 - 82 - 87 - 90 - 42 - 28 - 1;", grafoMut.dijkstra("Campinas", "Sao Paulo"));
 
     }
 }
