@@ -277,16 +277,15 @@ public class Grafo {
         GrafoMutavel subGrafoMutavel = (GrafoMutavel) this.clone();
         Integer x = null;
         Integer y = null;
-        if (origem != null && destino != null) {
+        if (origem != null && destino != null) 
+            x = destino;
+        if (vertice != null) 
+            y = vertice.getId();
+        if(x == null && y == null)
+            throw new IllegalArgumentException();
+        if (x != null) {
             subGrafoMutavel.removeAresta(origem, destino);
             subGrafoMutavel.removeAresta(destino, origem);
-            x = destino;
-        } else if (vertice != null) {
-            y = vertice.getId();
-        } else {
-            throw new IllegalArgumentException();
-        }
-        if (x != null) {
             for (int i = x; i <= subGrafoMutavel.vertices.size(); i++) {
                 if (subGrafoMutavel.vertices.find(i) != null) {
                     subGrafoMutavel.removeAresta(i, i + 1);
