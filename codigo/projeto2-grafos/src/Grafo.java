@@ -91,6 +91,7 @@ public class Grafo {
 
     /**
      * Valida se existe aresta entre o vertice A e B
+     * 
      * @param verticeA
      * @param verticeB
      * @return Aresta caso exista e null caso não exista
@@ -124,7 +125,8 @@ public class Grafo {
     }
 
     /**
-     * Cria um subgrafo de um grafo criado anteriormente a partir de uma lista de vértices passados como parâmetro
+     * Cria um subgrafo de um grafo criado anteriormente a partir de uma lista de
+     * vértices passados como parâmetro
      * 
      * @param vertices Recebe uma lista de vértices, para criar o subgrafo
      * @return Subgrafo
@@ -214,7 +216,7 @@ public class Grafo {
      * 
      * @param idVerticeInicio Vértice a partir do qual a busca ira iniciar
      * @return Grafo com o resultado da busca (Representação da busca)
-     */    
+     */
     public Grafo dfs(int idVerticeInicio) {
         GrafoMutavel grafoRetorno = new GrafoMutavel(this.nome + " DFS");
 
@@ -223,10 +225,12 @@ public class Grafo {
         // se cria uma lista de vizinhos do vertice inicial
         Lista<Integer> vizinhosList = this.vertices.find(idVerticeInicio).vizinhos();
         for (int i = 1; i <= vizinhosList.size();) { // percorre essa lista de vizinhos
-            search_dfs(this.vertices.find(i), grafoRetorno, i); // entra no metodo e faz ele percorrer cada vizinho do vizinho
-            grafoRetorno.addAresta(this.vertices.find(idVerticeInicio).getId(), i, 0); // adiciona as arestas  do vertice original para seus vizinhos
+            search_dfs(this.vertices.find(i), grafoRetorno, i); // entra no metodo e faz ele percorrer cada vizinho do
+                                                                // vizinho
+            grafoRetorno.addAresta(this.vertices.find(idVerticeInicio).getId(), i, 0); // adiciona as arestas do vertice
+                                                                                       // original para seus vizinhos
             vizinhosList.remove(i); // remove da lista o vizinho já percorrido
-        }        
+        }
         this.vertices.find(idVerticeInicio).visitar(); // mostra que o vertice foi visitado já
         grafoRetorno.addVertice(idVerticeInicio); // adiciona o vertice original
 
@@ -238,30 +242,44 @@ public class Grafo {
 
     /**
      * Método recursivo para realizar a busca em profundidade
+     * 
      * @param vertice
      * @param grafoRetorno
      * @param i
-     */    
+     */
     public void search_dfs(Vertice vertice, GrafoMutavel grafoRetorno, int i) {
         if (!vertice.visitado()) { // se não foi visitado ele entra
             vertice.visitar(); // adiciona que foi visitado
             Lista<Integer> vizinhosList = vertice.vizinhos(); // preenche uma list com os seus vizinhos
-            for (int x = 1; x <= vizinhosList.size();) { // percorre essa lista de vizinhos 
-                search_dfs(this.vertices.find(x), grafoRetorno, x); // entra no metodo e faz ele percorrer cada vizinho do vizinho
-                vizinhosList.remove(x);  // remove da lista o vizinho já percorrido
-                grafoRetorno.addAresta(vertice.getId(), x, 0);// adiciona as arestas  do vertice original para seus vizinhos
+            for (int x = 1; x <= vizinhosList.size();) { // percorre essa lista de vizinhos
+                search_dfs(this.vertices.find(x), grafoRetorno, x); // entra no metodo e faz ele percorrer cada vizinho
+                                                                    // do vizinho
+                vizinhosList.remove(x); // remove da lista o vizinho já percorrido
+                grafoRetorno.addAresta(vertice.getId(), x, 0);// adiciona as arestas do vertice original para seus
+                                                              // vizinhos
             }
         }
         grafoRetorno.addVertice(i);
     }
 
     /**
+     * 
+     * implementar uma função que recebe como parâmetro um vértice e/ou uma aresta e
+     * realiza a subtração do grafo por esse vértice e/ou aresta.
+     */
+    public Grafo subtracaoGrafo(Vertice vertice, Aresta aresta) {
+        return null;
+    }
+
+    @Override
+    /**
      * Método toString para converter um grafo em uma string
-    * @return Vértices e arestas do grafo em uma string ex:
-    *    Grafo: vertice;1,2,3
-    *    aresta;1-2-0,1-3-0
-    */
-    public String toString(){
+     * 
+     * @return Vértices e arestas do grafo em uma string ex:
+     *         Grafo: vertice;1,2,3
+     *         aresta;1-2-0,1-3-0
+     */
+    public String toString() {
         StringBuilder idVert = new StringBuilder();
         StringBuilder idArest = new StringBuilder();
 
@@ -269,11 +287,11 @@ public class Grafo {
 
         Vertice arrayVertice[] = new Vertice[vertices.size()];
         vertices.allElements(arrayVertice);
-    
+
         for (int i = 0; i < arrayVertice.length; i++) {
             Vertice vertice = vertices.find(arrayVertice[i].getId());
             idVert.append(vertice.getId());
-            if (i+1 < arrayVertice.length)
+            if (i + 1 < arrayVertice.length)
                 idVert.append(",");
 
             Aresta arestas[] = new Aresta[vertice.getAresta().size()];
@@ -297,7 +315,7 @@ public class Grafo {
         grafoString.append("vertice;");
         grafoString.append(idVert.toString() + ";");
         grafoString.append("\naresta;");
-        if(idArestStr.length() > 0)
+        if (idArestStr.length() > 0)
             grafoString.append(idArestStr.substring(0, idArestStr.length() - 1) + ";");
 
         return grafoString.toString();
