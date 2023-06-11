@@ -180,7 +180,6 @@ public class Vertice {
         return vizinhosList;
     }
 
-
     public double getLatitude() {
         return this.latitude;
     }
@@ -208,4 +207,14 @@ public class Vertice {
     public Object getNome() {
         return this.nome;
     }
+
+    /**
+    * Método toString para formatar dados de um vértice em uma string
+    * @return Id e Nome do Vértice em uma string
+    */
+    @Override
+    public String toString(){
+        return this.id + " | " + this.nome; 
+    }
+
 }

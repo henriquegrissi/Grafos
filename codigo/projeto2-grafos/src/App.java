@@ -28,6 +28,7 @@ public class App {
         System.out.println("7 - Fazer pesquisa DFS");
         System.out.println("8 - Fazer pesquisa BFS");
         System.out.println("9 - Encontrar caminho minimo");
+        System.out.println("10 - Exibir grau e vizinhos de um vértice especifico");
         System.out.println("0 - Sair");
         System.out.print("\nDigite sua opção: ");
         int opcao = Integer.parseInt(teclado.nextLine());
@@ -152,6 +153,20 @@ public class App {
                     }
                     caminhoMinimo(grafoMutavel);
                     break;
+                case 10:
+                    if(grafoMutavel.vertices.size() == 0){
+                        System.out.println("Selecione primeiro a opção 1 ou 3 para gerar um grafo");
+                        break;
+                    }
+                    
+                    System.out.println(grafoMutavel.stringListaVertices());
+
+                    System.out.print("ID do vértice para exibir o grau e lista de vizinhos: ");
+                    int idVertice = Integer.parseInt(teclado.nextLine());
+                    System.out.println(grafoMutavel.retornaGrauEVizinhosDeUmVertice(idVertice));
+                    break;
+                default:
+                    break;
             }
             pausa();
         } while (opcao != 0);
@@ -166,7 +181,7 @@ public class App {
 
                     LinkedList<Integer> caminhoMinimo = new LinkedList<Integer>();
                     
-                    caminhoMinimo = grafoMutavel.Dijkstra(verticeOrigem, verticeDestino);
+                    caminhoMinimo = grafoMutavel.dijkstra(verticeOrigem, verticeDestino);
                     if (caminhoMinimo != null){
                         String saida = "";
                         for(int i : caminhoMinimo){

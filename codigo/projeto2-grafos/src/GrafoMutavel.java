@@ -217,7 +217,7 @@ public class GrafoMutavel extends Grafo {
         arq.close();
     }
 
-    public LinkedList<Integer> Dijkstra(String origem, String destino) {
+    public LinkedList<Integer> dijkstra(String origem, String destino) {
         Vertice verticeOrigem = vertices.findByName(origem);
         Vertice verticeDestino = vertices.findByName(destino);
         zerarVertices();
@@ -284,4 +284,48 @@ public class GrafoMutavel extends Grafo {
         }
     }
 
+    //implementar uma função que recebe um vértice como parâmetro e retorna o grau desse vértice e quais são os seus vizinhos
+    public String retornaGrauEVizinhosDeUmVertice(int idVertice){
+        Vertice vertice = vertices.find(idVertice);
+        Vertice verticeVizinho;
+        StringBuilder stringFormatar = new StringBuilder();
+        
+        if (vertice != null) {
+            Lista<Integer> vizinhos = vertice.vizinhos();
+            Integer[] arrayVizinhos = new Integer[vizinhos.size()];
+            arrayVizinhos = vizinhos.allElements(arrayVizinhos);
+
+            stringFormatar.append("GRAU: " + vertice.grau());
+            stringFormatar.append("\nVIZINHOS:");
+            stringFormatar.append("\nId | Cidade");
+            for(int id : arrayVizinhos){
+                verticeVizinho = vertices.find(id);
+                if(vertice != null)
+                    stringFormatar.append("\n" + verticeVizinho.toString());
+            }
+        }
+
+        return stringFormatar.toString();
+    }
+
+    /**
+     * Retorna uma string com o id e nome de cada um dos vértices do grafo
+     * @return
+     */
+    public String stringListaVertices(){
+        StringBuilder stringVertices = new StringBuilder();
+        Vertice[] arrayVertices = new Vertice[this.vertices.size()];
+        arrayVertices = vertices.allElements(arrayVertices);
+
+        stringVertices.append("-------------- LISTA VÉRTICES ------------");
+        stringVertices.append("\nID | CIDADE");
+
+        for(Vertice vertice : arrayVertices){
+            stringVertices.append("\n" + vertice.toString());    
+        }
+
+        stringVertices.append("\n-----------------------------------------");
+
+        return stringVertices.toString();
+    }
 }
