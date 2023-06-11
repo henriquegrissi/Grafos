@@ -265,42 +265,44 @@ public class Grafo {
     /**
      * Realiza a subtração do grafo por aresta
      * 
-     * @param origem  origem da aresta
-     * @param destino destino da aresta
+     * @param vertice vertice, null se nao usar
+     * @param origem  origem da aresta, null se nao usar
+     * @param destino destino da aresta, null se nao usar
      * @return grafo subtraido
      * @throws CloneNotSupportedException
+     * @throws IllegalArgumentException
      */
-    public Grafo subtracaoGrafoAresta(int origem, int destino) throws CloneNotSupportedException {
+    public Grafo subtracaoGrafo(Vertice vertice, Integer origem, Integer destino)
+            throws CloneNotSupportedException, IllegalArgumentException {
         GrafoMutavel subGrafoMutavel = (GrafoMutavel) this.clone();
-        // GrafoMutavel subGrafoMutavel = (GrafoMutavel) this.subtracaoGrafoVertice(new
-        // Vertice(destino));
-        subGrafoMutavel.removeAresta(origem, destino);
-        subGrafoMutavel.removeAresta(destino, origem);
-        for (int i = destino; i <= subGrafoMutavel.vertices.size(); i++) {
-            if (subGrafoMutavel.vertices.find(i).existeAresta(destino + 1) != null) {
-                subGrafoMutavel.removeAresta(i, i + 1);
-                subGrafoMutavel.removeAresta(i + 1, i);
-                subGrafoMutavel.removeVertice(i);
-                subGrafoMutavel.removeVertice(i + 1);
+        Integer x = null;
+        Integer y = null;
+        if (origem != null && destino != null) 
+            x = destino;
+        if (vertice != null) 
+            y = vertice.getId();
+        if(x == null && y == null)
+            throw new IllegalArgumentException();
+        if (x != null) {
+            subGrafoMutavel.removeAresta(origem, destino);
+            subGrafoMutavel.removeAresta(destino, origem);
+            for (int i = x; i <= subGrafoMutavel.vertices.size(); i++) {
+                if (subGrafoMutavel.vertices.find(i) != null) {
+                    subGrafoMutavel.removeAresta(i, i + 1);
+                    subGrafoMutavel.removeAresta(i + 1, i);
+                    subGrafoMutavel.removeVertice(i);
+                    subGrafoMutavel.removeVertice(i + 1);
+                }
             }
         }
-        return subGrafoMutavel;
-    }
-
-    /**
-     * Realiza a subtração do grafo por vertice
-     * 
-     * @param vertice vertice
-     * @return grafo subtraido
-     * @throws CloneNotSupportedException
-     */
-    public Grafo subtracaoGrafoVertice(Vertice vertice) throws CloneNotSupportedException {
-        GrafoMutavel subGrafoMutavel = (GrafoMutavel) this.clone();
-        for (int i = 0; i <= subGrafoMutavel.vertices.size(); i++) {
-            subGrafoMutavel.removeAresta(vertice.getId(), i);
-            subGrafoMutavel.removeAresta(i, vertice.getId());
+        if (y != null) {
+            for (int i = 0; i <= subGrafoMutavel.vertices.size(); i++) {
+                subGrafoMutavel.removeAresta(y, i);
+                subGrafoMutavel.removeAresta(i, y);
+            }
+            subGrafoMutavel.removeVertice(y);
         }
-        subGrafoMutavel.removeVertice(vertice.getId());
+
         return subGrafoMutavel;
     }
 
