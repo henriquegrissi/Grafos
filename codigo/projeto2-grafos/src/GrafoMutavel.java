@@ -257,6 +257,13 @@ public class GrafoMutavel extends Grafo {
             // pega o primeiro vizinho
             int vizinho = verticesVizinhos.get(0);
             
+            if(vertices.find(vizinho).visitado() && verticesVizinhos.size() >= 1){
+                verticesVizinhos.removeFirst();
+                if(verticesVizinhos.size() == 0)
+                    break;
+                continue;
+            }
+
             // caso o vizinho não seja o que procura ele procura nos filhos de cada vertice
             retorno = caminhoMinimo(vertices.find(vizinho), verticeDestino);
             if (retorno.getLast() == verticeDestino.getId()){

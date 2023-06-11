@@ -172,6 +172,8 @@ public class App {
                             System.out.println(i);
                             System.out.println("-");
                         }
+                    } else {
+                        System.out.println("Não existe caminho para essa cidade");
                     }
     }
 
