@@ -223,6 +223,50 @@ public class GrafoTest {
     }
 
     @Test
+    public void deveCalcularAgmComMetodoDePrim() {
+        GrafoMutavel grafoB = new GrafoMutavel("grafob");
+
+        grafoB.addVertice(1);
+        grafoB.addVertice(2);
+        grafoB.addVertice(3);
+        grafoB.addVertice(4);
+        grafoB.addVertice(5);
+        grafoB.addVertice(6);
+        grafoB.addVertice(7);
+        grafoB.addVertice(8);
+        grafoB.addVertice(9);
+
+        grafoB.addAresta(1,4,1);
+        grafoB.addAresta(1,2,8);
+        grafoB.addAresta(2,1,8);
+        grafoB.addAresta(2,3,4);
+        grafoB.addAresta(2,5,5);
+        grafoB.addAresta(3,2,4);
+        grafoB.addAresta(3,4,7);
+        grafoB.addAresta(3,6,1);
+        grafoB.addAresta(4,1,1);
+        grafoB.addAresta(4,7,5);
+        grafoB.addAresta(4,3,7);
+        grafoB.addAresta(5,2,5);
+        grafoB.addAresta(5,6,2);
+        grafoB.addAresta(5,9,1);
+        grafoB.addAresta(6,7,8);
+        grafoB.addAresta(6,3,1);
+        grafoB.addAresta(6,8,6);
+        grafoB.addAresta(6,5,2);
+        grafoB.addAresta(7,4,5);
+        grafoB.addAresta(7,8,9);
+        grafoB.addAresta(7,6,8);
+        grafoB.addAresta(8,7,9);
+        grafoB.addAresta(8,6,6);
+        grafoB.addAresta(8,9,7);
+        grafoB.addAresta(9,5,1);
+        grafoB.addAresta(9,8,7);
+
+        assertEquals(27, grafoB.metodoPrim(1));
+    }
+
+    @Test
     public void deveSubtrairVertice() throws CloneNotSupportedException {
         GrafoMutavel grafoB = new GrafoMutavel("grafob");
         Grafo grafoF = new GrafoMutavel("grafof");

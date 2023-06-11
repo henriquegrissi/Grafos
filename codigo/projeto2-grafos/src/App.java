@@ -29,6 +29,7 @@ public class App {
         System.out.println("8 - Fazer pesquisa BFS");
         System.out.println("9 - Encontrar caminho minimo");
         System.out.println("10 - Exibir grau e vizinhos de um vértice especifico");
+        System.out.println("11 - Gerar AGM a partir de um vértice");
         System.out.println("0 - Sair");
         System.out.print("\nDigite sua opção: ");
         int opcao = Integer.parseInt(teclado.nextLine());

@@ -26,6 +26,8 @@ public class Aresta {
 
     private int peso;
     private int destino;
+    private int id;
+    private static int parseId = 0;
     private boolean visitada;
 
     /**
@@ -34,7 +36,7 @@ public class Aresta {
      * @param dest Vértice de destino
      */
     public Aresta(int peso, int destino){
-       init(peso, destino);
+       init(parseId++, peso, destino);
     }
 
     /**
@@ -42,7 +44,7 @@ public class Aresta {
      * @param dest Vértice de destino
      */
     public Aresta(int destino){
-        init(0, destino);
+        init(parseId++, 0, destino);
     }
 
     /**
@@ -51,12 +53,20 @@ public class Aresta {
      * @param peso
      * @param destino
      */
-    private void init(int peso, int destino){
+    private void init(int id, int peso, int destino){
+        this.id = id;
         this.peso = peso;
         this.destino = destino;
         this.visitada = false;
     }
 
+    /**
+     * Método get para retornar o id da aresta
+     * @return id da aresta
+     */
+    public int getId(){
+        return this.id;
+    }
     /**
      * Método de acesso para o peso da aresta
      * @return Peso da aresta (int)
