@@ -277,7 +277,7 @@ public class Grafo {
         GrafoMutavel subGrafoMutavel = (GrafoMutavel) this.clone();
         Integer x = null;
         Integer y = null;
-        if (destino != null) {
+        if (origem != null && destino != null) {
             subGrafoMutavel.removeAresta(origem, destino);
             subGrafoMutavel.removeAresta(destino, origem);
             x = destino;
