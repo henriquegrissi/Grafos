@@ -184,13 +184,11 @@ public class Grafo {
      * @param idVerticeInicio Vértice a partir do qual a busca ira iniciar
      * @return Grafo com o resultado da busca (Representação da busca)
      */
-    public GrafoMutavel bfs(int idVerticeInicio) {
-        GrafoMutavel grafoRetorno = new GrafoMutavel(this.nome + " BFS");
+    public String bfs(int idVerticeInicio) {
         Queue<Vertice> queue = new LinkedList<>();
-
+        StringBuilder str = new StringBuilder(idVerticeInicio + " ");
         queue.add(this.vertices.find(idVerticeInicio));
         this.vertices.find(idVerticeInicio).visitar();
-        grafoRetorno.addVertice(idVerticeInicio);
 
         while (!queue.isEmpty()) {
             Lista<Integer> vizinhosList = queue.remove().vizinhos();
@@ -198,68 +196,73 @@ public class Grafo {
             vizinhosListArray = vizinhosList.allElements(vizinhosListArray);
 
             for (int i = 0; i < vizinhosList.size(); i++) {
-                if (!vertices.find(vizinhosListArray[i]).visitado()) {
-                    vertices.find(vizinhosListArray[i]).visitar();
-                    queue.add(vertices.find(vizinhosListArray[i]));
-                    grafoRetorno.addVertice(vizinhosListArray[i]);
-                    grafoRetorno.addAresta(vertices.find(vizinhosListArray[i]).getId(), idVerticeInicio, 0);
+                if (!this.vertices.find(vizinhosListArray[i]).visitado()) {
+                    this.vertices.find(vizinhosListArray[i]).visitar();
+                    queue.add(this.vertices.find(vizinhosListArray[i]));
+                    str.append(vizinhosListArray[i]);
+                    str.append(" ");
                 }
             }
             idVerticeInicio = vizinhosListArray[0];
         }
 
-        return grafoRetorno;
+        return str.toString();
     }
 
     /**
      * Realiza a busca em profundidade no grafo a partir de um vértice de inicio
      * 
      * @param idVerticeInicio Vértice a partir do qual a busca ira iniciar
-     * @return Grafo com o resultado da busca (Representação da busca)
+     * @return String em ordem
      */
-    public Grafo dfs(int idVerticeInicio) {
-        GrafoMutavel grafoRetorno = new GrafoMutavel(this.nome + " DFS");
+    public String dfs(int idVerticeInicio) {
+        StringBuilder str = new StringBuilder(idVerticeInicio + " ");
 
         this.vertices.find(idVerticeInicio).visitar();
 
         // se cria uma lista de vizinhos do vertice inicial
         Lista<Integer> vizinhosList = this.vertices.find(idVerticeInicio).vizinhos();
         for (int i = 1; i <= vizinhosList.size();) { // percorre essa lista de vizinhos
-            search_dfs(this.vertices.find(i), grafoRetorno, i); // entra no metodo e faz ele percorrer cada vizinho do
+            search_dfs(this.vertices.find(i), str, i); // entra no metodo e faz ele percorrer cada vizinho do
                                                                 // vizinho
-            grafoRetorno.addAresta(this.vertices.find(idVerticeInicio).getId(), i, 0); // adiciona as arestas do vertice
+            str.append(this.vertices.find(idVerticeInicio).getId()); // adiciona as arestas do vertice
                                                                                        // original para seus vizinhos
+            str.append(" ");
             vizinhosList.remove(i); // remove da lista o vizinho já percorrido
         }
         this.vertices.find(idVerticeInicio).visitar(); // mostra que o vertice foi visitado já
-        grafoRetorno.addVertice(idVerticeInicio); // adiciona o vertice original
+        str.append(idVerticeInicio); // adiciona o vertice original
+        str.append(" ");
 
         for (int i = 1; i < this.vertices.size(); i++) {
             this.vertices.find(i).limparVisita();
         }
-        return grafoRetorno;
+        System.out.println(str.toString());
+        return str.toString();
     }
 
     /**
      * Método recursivo para realizar a busca em profundidade
      * 
      * @param vertice
-     * @param grafoRetorno
+     * @param str
      * @param i
      */
-    public void search_dfs(Vertice vertice, GrafoMutavel grafoRetorno, int i) {
+    public void search_dfs(Vertice vertice, StringBuilder str, int i) {
         if (!vertice.visitado()) { // se não foi visitado ele entra
             vertice.visitar(); // adiciona que foi visitado
             Lista<Integer> vizinhosList = vertice.vizinhos(); // preenche uma list com os seus vizinhos
             for (int x = 1; x <= vizinhosList.size();) { // percorre essa lista de vizinhos
-                search_dfs(this.vertices.find(x), grafoRetorno, x); // entra no metodo e faz ele percorrer cada vizinho
+                search_dfs(this.vertices.find(x), str, x); // entra no metodo e faz ele percorrer cada vizinho
                                                                     // do vizinho
                 vizinhosList.remove(x); // remove da lista o vizinho já percorrido
-                grafoRetorno.addAresta(vertice.getId(), x, 0);// adiciona as arestas do vertice original para seus
+                str.append(vertice.getId());// adiciona as arestas do vertice original para seus
                                                               // vizinhos
+                str.append(" ");
             }
         }
-        grafoRetorno.addVertice(i);
+        str.append(i);
+        str.append(" ");
     }
 
     /**
