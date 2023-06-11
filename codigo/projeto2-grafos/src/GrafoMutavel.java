@@ -144,8 +144,8 @@ public class GrafoMutavel extends Grafo {
             for (int i=0; i<4 ;i++){
                 Vertice menorVertice = null;
                 int origem = 0, destino = 0, peso = 0;
+                double distancia = Double.MAX_VALUE;
                 for (Vertice melhoVerticeDeDistancia : listaDeCidadesMaisPerto.keySet()) {
-                    double distancia = Double.MAX_VALUE;
 
                     // verifica qual o menor caminho(a cidade mais perto)
                     if (listaDeCidadesMaisPerto.get(melhoVerticeDeDistancia) < distancia){
@@ -231,12 +231,12 @@ public class GrafoMutavel extends Grafo {
     } 
 
     public LinkedList<Integer> caminhoMinimo(Vertice verticeOrigem, Vertice verticeDestino) {
-        LinkedList<Integer> retorno, caminho, vizinhos = new LinkedList<Integer>();
+        LinkedList<Integer> retorno, caminho, verticesVizinhos = new LinkedList<Integer>();
         boolean valid = true;
 
-        vizinhos = verticeOrigem.verticesVizinhos();
+        verticesVizinhos = verticeOrigem.verticesVizinhos();
         
-        if (vizinhos.isEmpty()) {
+        if (verticesVizinhos.isEmpty()) {
             System.out.println("O vertice de origem não possui vizinhos.");
             return null;
         }
@@ -245,26 +245,27 @@ public class GrafoMutavel extends Grafo {
         caminho.add(verticeOrigem.getId());
 
         // verifica se um dos vizinhos e o vertice desejado
-        for (int i : vizinhos) {
+        for (int i : verticesVizinhos) {
+            vertices.find(i).visitar();
             if (i == verticeDestino.getId()){
                 caminho.add(i);
                 return caminho;
             }
         }
 
-        while ((vizinhos.size() > 0 || valid) ) {
+        while ((verticesVizinhos.size() > 0 || valid) ) {
             // pega o primeiro vizinho
-            int vizinho = vizinhos.get(0);
-
-            // caso não seja o que procura ele remove da lista de viznhos
-            vizinhos.remove(vizinho);
-
-            // caso o vizinho não seja
+            int vizinho = verticesVizinhos.get(0);
+            
+            // caso o vizinho não seja o que procura ele procura nos filhos de cada vertice
             retorno = caminhoMinimo(vertices.find(vizinho), verticeDestino);
             if (retorno.getLast() == verticeDestino.getId()){
                 valid = false;
                 caminho.addAll(retorno);
             }
+
+            // caso não seja o que procura ele remove da lista de viznhos
+            verticesVizinhos.removeFirst();
         }
         return caminho;
     }
