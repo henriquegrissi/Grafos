@@ -26,8 +26,7 @@ public class GrafoMutavel extends Grafo {
     public boolean addVertice(int id, String nome, double latitude, double longitude) {
         Vertice novo = new Vertice(id, nome, latitude, longitude);
         return this.vertices.add(id, novo);
-    }    
-    
+    }
 
     /**
      * Adiciona um vértice com o id especificado. Ignora a ação e retorna false se
@@ -40,7 +39,7 @@ public class GrafoMutavel extends Grafo {
     public boolean addVertice(int id) {
         Vertice novo = new Vertice(id);
         return this.vertices.add(id, novo);
-    }    
+    }
 
     public Vertice removeVertice(int id) {
         Vertice vertice = vertices.find(id);
@@ -52,8 +51,10 @@ public class GrafoMutavel extends Grafo {
     }
 
     /**
-     * Adiciona uma aresta entre dois vértices do grafo, caso os dois vértices existam no grafo.
-     * Caso a aresta já exista, ou algum dos vértices não existir, o comando é ignorado e retorna FALSE.
+     * Adiciona uma aresta entre dois vértices do grafo, caso os dois vértices
+     * existam no grafo.
+     * Caso a aresta já exista, ou algum dos vértices não existir, o comando é
+     * ignorado e retorna FALSE.
      * 
      * @param origem  Vértice de origem
      * @param destino Vértice de destino
@@ -71,9 +72,10 @@ public class GrafoMutavel extends Grafo {
     }
 
     /**
-     * Método para remover a aresta com origem e destino de acordo com os parâmetros recebidos
+     * Método para remover a aresta com origem e destino de acordo com os parâmetros
+     * recebidos
      * 
-     * @param origem Vértice de origem
+     * @param origem  Vértice de origem
      * @param destino Vértice de destino
      * @return Aresta removida caso exista e null caso não exista aresta
      */
@@ -82,15 +84,16 @@ public class GrafoMutavel extends Grafo {
         Aresta arestaR = this.existeAresta(origem, destino);
 
         if (arestaR == null) {
-            System.out.println("A aresta não existe no grafo.");
+            // System.out.println("A aresta não existe no grafo.");
             return null;
-        }else{
-           return verticeO.removeAresta(destino);
+        } else {
+            return verticeO.removeAresta(destino);
         }
     }
- 
+
     /**
      * Carregar um arquivo de Grafo
+     * 
      * @param nomeArquivo
      * @throws FileNotFoundException
      * @throws EOFException
@@ -112,7 +115,7 @@ public class GrafoMutavel extends Grafo {
             leitura = entrada.nextLine();
             id++;
             nomeVertive = leitura.split(",")[0];
-            latitude  = Double.parseDouble(leitura.split(",")[1]);
+            latitude = Double.parseDouble(leitura.split(",")[1]);
             longitude = Double.parseDouble(leitura.split(",")[2]);
 
             Vertice newVertice = new Vertice(id, nomeVertive, latitude, longitude);
@@ -120,36 +123,37 @@ public class GrafoMutavel extends Grafo {
             listaDeVertices.add(newVertice);
         }
         entrada.close();
-        
+
         // percorrendo cada vertice da lista e adiciona a distancia com o vertice
         for (Vertice vertice : listaDeVertices) {
             listaDeCidadesMaisPerto = new HashMap<Vertice, Double>(200);
             for (Vertice outroVertice : listaDeVertices) {
-                if (outroVertice.getId()!=vertice.getId()){
-                    double distancia = vertice.calcularDistancia(outroVertice.getLatitude(), outroVertice.getLongitude());
+                if (outroVertice.getId() != vertice.getId()) {
+                    double distancia = vertice.calcularDistancia(outroVertice.getLatitude(),
+                            outroVertice.getLongitude());
                     listaDeCidadesMaisPerto.put(outroVertice, distancia);
                 }
             }
 
             // ordena a lista de vertices
-            Collections.sort(listaDeVertices, (a,b) -> {
-                            double distanciaA, distanciaB;
-                            distanciaA = vertice.calcularDistancia(a.getLatitude(), a.getLongitude());
-                            distanciaB = vertice.calcularDistancia(b.getLatitude(), b.getLongitude());
-                            return Double.compare(distanciaA, distanciaB); 
+            Collections.sort(listaDeVertices, (a, b) -> {
+                double distanciaA, distanciaB;
+                distanciaA = vertice.calcularDistancia(a.getLatitude(), a.getLongitude());
+                distanciaB = vertice.calcularDistancia(b.getLatitude(), b.getLongitude());
+                return Double.compare(distanciaA, distanciaB);
             });
 
             // adicionando as 4 cidades mais proxima da que estamos vendo
-            for (int i=0; i<4 ;i++){
+            for (int i = 0; i < 4; i++) {
                 Vertice menorVertice = null;
                 int origem = 0, destino = 0, peso = 0;
                 double distancia = Double.MAX_VALUE;
                 for (Vertice melhoVerticeDeDistancia : listaDeCidadesMaisPerto.keySet()) {
 
                     // verifica qual o menor caminho(a cidade mais perto)
-                    if (listaDeCidadesMaisPerto.get(melhoVerticeDeDistancia) < distancia){
+                    if (listaDeCidadesMaisPerto.get(melhoVerticeDeDistancia) < distancia) {
                         menorVertice = melhoVerticeDeDistancia;
-                        
+
                         origem = vertice.getId();
                         destino = melhoVerticeDeDistancia.getId();
                         distancia = listaDeCidadesMaisPerto.get(melhoVerticeDeDistancia);
@@ -157,7 +161,7 @@ public class GrafoMutavel extends Grafo {
                     }
                 }
                 // verifica se tem algum valor, caso tenha cria uma aresta para os vertices
-                if(origem != 0 && destino != 0){
+                if (origem != 0 && destino != 0) {
                     vertice.addAresta(destino, peso);
                     this.addAresta(origem, destino, peso);
                     // remove da lista a cidade já usada
@@ -187,7 +191,7 @@ public class GrafoMutavel extends Grafo {
         for (int i = 0; i < arrayVertice.length; i++) {
             Vertice vertice = vertices.find(arrayVertice[i].getId());
             idVert.append(vertice.getId());
-            if (i+1 < arrayVertice.length)
+            if (i + 1 < arrayVertice.length)
                 idVert.append(",");
 
             Aresta arestas[] = new Aresta[vertice.getAresta().size()];
@@ -211,7 +215,7 @@ public class GrafoMutavel extends Grafo {
         gravarArq.write(idVert.toString() + ";");
         gravarArq.write("\naresta;");
 
-        if(idArestStr.length() > 0)
+        if (idArestStr.length() > 0)
             gravarArq.write(idArestStr.substring(0, idArestStr.length() - 1) + ";");
 
         arq.close();
@@ -225,17 +229,17 @@ public class GrafoMutavel extends Grafo {
         if (verticeOrigem == null || verticeDestino == null) {
             System.out.println("O vertice de origem ou destino não existe no grafo.");
             return null;
-        }else{
+        } else {
             verticeOrigem.visitar();
             return caminhoMinimo(verticeOrigem, verticeDestino);
         }
-    } 
+    }
 
     public LinkedList<Integer> caminhoMinimo(Vertice verticeOrigem, Vertice verticeDestino) {
         LinkedList<Integer> retorno, caminho, verticesVizinhos = new LinkedList<Integer>();
 
         verticesVizinhos = verticeOrigem.verticesVizinhos();
-        
+
         if (verticesVizinhos.isEmpty()) {
             System.out.println("O vertice de origem não possui vizinhos.");
             return null;
@@ -245,14 +249,13 @@ public class GrafoMutavel extends Grafo {
         caminho = new LinkedList<Integer>();
         caminho.add(verticeOrigem.getId());
 
-        
-        while ((!verticesVizinhos.isEmpty()) ) {
+        while ((!verticesVizinhos.isEmpty())) {
             // pega o primeiro vizinho
             int vizinho = verticesVizinhos.get(0);
-            
-            if(vertices.find(vizinho).visitado() && verticesVizinhos.size() >= 1){
+
+            if (vertices.find(vizinho).visitado() && verticesVizinhos.size() >= 1) {
                 verticesVizinhos.removeFirst();
-                if(verticesVizinhos.size() == 0)
+                if (verticesVizinhos.size() == 0)
                     break;
                 continue;
             }
@@ -260,14 +263,14 @@ public class GrafoMutavel extends Grafo {
             vertices.find(vizinho).visitar();
 
             // caso o vizinho não seja o que procura ele procura nos filhos de cada vertice
-            if(vertices.find(vizinho).getId() == verticeDestino.getId()){
+            if (vertices.find(vizinho).getId() == verticeDestino.getId()) {
                 caminho.add(vizinho);
                 return caminho;
-            }else {
+            } else {
                 retorno = caminhoMinimo(vertices.find(vizinho), verticeDestino);
             }
-            
-            if(retorno.getLast() == verticeDestino.getId())
+
+            if (retorno.getLast() == verticeDestino.getId())
                 break;
             // caso não seja o que procura ele remove da lista de viznhos
             verticesVizinhos.removeFirst();
@@ -277,19 +280,20 @@ public class GrafoMutavel extends Grafo {
     }
 
     private void zerarVertices() {
-        Vertice arrayVertice[] = new Vertice[vertices.size()]; 
+        Vertice arrayVertice[] = new Vertice[vertices.size()];
         vertices.allElements(arrayVertice);
-        for(Vertice vertice : arrayVertice ) {
+        for (Vertice vertice : arrayVertice) {
             vertice.limparVisita();
         }
     }
 
-    //implementar uma função que recebe um vértice como parâmetro e retorna o grau desse vértice e quais são os seus vizinhos
-    public String retornaGrauEVizinhosDeUmVertice(int idVertice){
+    // implementar uma função que recebe um vértice como parâmetro e retorna o grau
+    // desse vértice e quais são os seus vizinhos
+    public String retornaGrauEVizinhosDeUmVertice(int idVertice) {
         Vertice vertice = vertices.find(idVertice);
         Vertice verticeVizinho;
         StringBuilder stringFormatar = new StringBuilder();
-        
+
         if (vertice != null) {
             Lista<Integer> vizinhos = vertice.vizinhos();
             Integer[] arrayVizinhos = new Integer[vizinhos.size()];
@@ -298,9 +302,9 @@ public class GrafoMutavel extends Grafo {
             stringFormatar.append("GRAU: " + vertice.grau());
             stringFormatar.append("\nVIZINHOS:");
             stringFormatar.append("\nId | Cidade");
-            for(int id : arrayVizinhos){
+            for (int id : arrayVizinhos) {
                 verticeVizinho = vertices.find(id);
-                if(vertice != null)
+                if (vertice != null)
                     stringFormatar.append("\n" + verticeVizinho.toString());
             }
         }
@@ -310,9 +314,10 @@ public class GrafoMutavel extends Grafo {
 
     /**
      * Retorna uma string com o id e nome de cada um dos vértices do grafo
+     * 
      * @return
      */
-    public String stringListaVertices(){
+    public String stringListaVertices() {
         StringBuilder stringVertices = new StringBuilder();
         Vertice[] arrayVertices = new Vertice[this.vertices.size()];
         arrayVertices = vertices.allElements(arrayVertices);
@@ -320,8 +325,8 @@ public class GrafoMutavel extends Grafo {
         stringVertices.append("-------------- LISTA VÉRTICES ------------");
         stringVertices.append("\nID | CIDADE");
 
-        for(Vertice vertice : arrayVertices){
-            stringVertices.append("\n" + vertice.toString());    
+        for (Vertice vertice : arrayVertices) {
+            stringVertices.append("\n" + vertice.toString());
         }
 
         stringVertices.append("\n-----------------------------------------");

@@ -263,12 +263,55 @@ public class Grafo {
     }
 
     /**
+     * Realiza a subtração do grafo por aresta
      * 
-     * implementar uma função que recebe como parâmetro um vértice e/ou uma aresta e
-     * realiza a subtração do grafo por esse vértice e/ou aresta.
+     * @param origem  origem da aresta
+     * @param destino destino da aresta
+     * @return grafo subtraido
+     * @throws CloneNotSupportedException
      */
-    public Grafo subtracaoGrafo(Vertice vertice, Aresta aresta) {
-        return null;
+    public Grafo subtracaoGrafoAresta(int origem, int destino) throws CloneNotSupportedException {
+        GrafoMutavel subGrafoMutavel = (GrafoMutavel) this.clone();
+        // GrafoMutavel subGrafoMutavel = (GrafoMutavel) this.subtracaoGrafoVertice(new
+        // Vertice(destino));
+        subGrafoMutavel.removeAresta(origem, destino);
+        subGrafoMutavel.removeAresta(destino, origem);
+        for (int i = destino; i <= subGrafoMutavel.vertices.size(); i++) {
+            if (subGrafoMutavel.vertices.find(i).existeAresta(destino + 1) != null) {
+                subGrafoMutavel.removeAresta(i, i + 1);
+                subGrafoMutavel.removeAresta(i + 1, i);
+                subGrafoMutavel.removeVertice(i);
+                subGrafoMutavel.removeVertice(i + 1);
+            }
+        }
+        return subGrafoMutavel;
+    }
+
+    /**
+     * Realiza a subtração do grafo por vertice
+     * 
+     * @param vertice vertice
+     * @return grafo subtraido
+     * @throws CloneNotSupportedException
+     */
+    public Grafo subtracaoGrafoVertice(Vertice vertice) throws CloneNotSupportedException {
+        GrafoMutavel subGrafoMutavel = (GrafoMutavel) this.clone();
+        for (int i = 0; i <= subGrafoMutavel.vertices.size(); i++) {
+            subGrafoMutavel.removeAresta(vertice.getId(), i);
+            subGrafoMutavel.removeAresta(i, vertice.getId());
+        }
+        subGrafoMutavel.removeVertice(vertice.getId());
+        return subGrafoMutavel;
+    }
+
+    @Override
+    public Object clone() {
+        try {
+            return super.clone();
+        } catch (CloneNotSupportedException e) {
+            System.out.println("Cloning não permitido.");
+            return this;
+        }
     }
 
     @Override

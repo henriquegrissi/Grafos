@@ -173,21 +173,23 @@ public class GrafoTest {
         assertEquals(5, meuGrafo.tamanho());
     }
 
-    /*@Test
-    public void deveRealizarBuscaEmProfundidade() {
-        GrafoMutavel grafoB = new GrafoMutavel("4");
-        GrafoMutavel grafoF = new GrafoMutavel("4");
-
-        grafoB.addVertice(1);
-        grafoB.addVertice(2);
-        grafoB.addVertice(3);
-
-        grafoB.addAresta(1, 2, 0);
-        grafoB.addAresta(2, 3, 0);
-        grafoF = (GrafoMutavel) grafoB.dfs(2);
-
-        assertNotNull(grafoF.existeAresta(1, 2));
-    }*/
+    /*
+     * @Test
+     * public void deveRealizarBuscaEmProfundidade() {
+     * GrafoMutavel grafoB = new GrafoMutavel("4");
+     * GrafoMutavel grafoF = new GrafoMutavel("4");
+     * 
+     * grafoB.addVertice(1);
+     * grafoB.addVertice(2);
+     * grafoB.addVertice(3);
+     * 
+     * grafoB.addAresta(1, 2, 0);
+     * grafoB.addAresta(2, 3, 0);
+     * grafoF = (GrafoMutavel) grafoB.dfs(2);
+     * 
+     * assertNotNull(grafoF.existeAresta(1, 2));
+     * }
+     */
 
     @Test
     public void retornaGraudoVertice3() {
@@ -218,5 +220,39 @@ public class GrafoTest {
         grafoB.addAresta(3, 1, 0);
         grafoF = grafoB.bfs(1);
         assertNotNull(grafoF.existeAresta(1, 2));
+    }
+
+    @Test
+    public void deveSubtrairVertice() throws CloneNotSupportedException {
+        GrafoMutavel grafoB = new GrafoMutavel("grafob");
+        Grafo grafoF = new GrafoMutavel("grafof");
+        grafoB.addVertice(1);
+        grafoB.addVertice(2);
+        grafoB.addVertice(3);
+
+        grafoB.addAresta(1, 2, 0);
+        grafoB.addAresta(2, 3, 0);
+        grafoB.addAresta(3, 1, 0);
+        Vertice a = new Vertice(2);
+        grafoF = grafoB.subtracaoGrafoVertice(a);
+        assertEquals("Grafo: vertice;1,3;\naresta;1-3-0,3-1-0;", grafoF.toString());
+    }
+
+    @Test
+    public void deveSubtrairAresta() throws CloneNotSupportedException {
+        GrafoMutavel grafoB = new GrafoMutavel("grafob");
+        Grafo grafoF = new GrafoMutavel("grafof");
+        grafoB.addVertice(1);
+        grafoB.addVertice(2);
+        grafoB.addVertice(3);
+        grafoB.addVertice(4);
+
+        grafoB.addAresta(1, 2, 0);
+        grafoB.addAresta(2, 3, 0);
+        grafoB.addAresta(3, 1, 0);
+        grafoB.addAresta(4, 3, 0);
+
+        grafoF = grafoB.subtracaoGrafoAresta(2, 3);
+        assertEquals("Grafo: vertice;1,2;\naresta;1-2-0,1-3-0,2-1-0;", grafoF.toString());
     }
 }
