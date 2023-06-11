@@ -22,7 +22,6 @@
  * SOFTWARE.
  */
 
-import java.util.Comparator;
 import java.util.LinkedList;
 
 /** Classe Vertice para um grafo */
