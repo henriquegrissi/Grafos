@@ -217,7 +217,7 @@ public class GrafoMutavel extends Grafo {
         arq.close();
     }
 
-    public LinkedList<Integer> dijkstra(String origem, String destino) {
+    public void dijkstra(String origem, String destino) {
         Vertice verticeOrigem = vertices.findByName(origem);
         Vertice verticeDestino = vertices.findByName(destino);
         zerarVertices();
@@ -227,12 +227,23 @@ public class GrafoMutavel extends Grafo {
             return null;
         }else{
             verticeOrigem.visitar();
-            return caminhoMinimo(verticeOrigem, verticeDestino);
+            LinkedList<Integer> caminhoMinimo = new LinkedList<Integer>();
+            caminhoMinimo = caminhoMinimo(verticeOrigem, verticeDestino);
+                    if (caminhoMinimo != null){
+                        String saida = "";
+                        for(int i : caminhoMinimo){
+                            saida += " - " + i ;
+                        }
+                        System.out.println("Esse e o caminho minimo: " + saida);
+                    } else {
+                        System.out.println("Não existe caminho para essa cidade");
+                    }
+                
+                
         }
     } 
 
-    public LinkedList<Integer> caminhoMinimo(Vertice verticeOrigem, Vertice verticeDestino) {
-        LinkedList<Integer> retorno, caminho, verticesVizinhos = new LinkedList<Integer>();
+    public LinkedList<Integer> caminhoMinimo(Vertice verticeOrigem, Vertice verticeDestino) { = new LinkedList<Integer>();
 
         verticesVizinhos = verticeOrigem.verticesVizinhos();
         
