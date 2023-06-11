@@ -234,7 +234,7 @@ public class GrafoTest {
         grafoB.addAresta(2, 3, 0);
         grafoB.addAresta(3, 1, 0);
         Vertice a = new Vertice(2);
-        grafoF = grafoB.subtracaoGrafoVertice(a);
+        grafoF = grafoB.subtracaoGrafo(a, null, null);
         assertEquals("Grafo: vertice;1,3;\naresta;1-3-0,3-1-0;", grafoF.toString());
     }
 
@@ -252,7 +252,7 @@ public class GrafoTest {
         grafoB.addAresta(3, 1, 0);
         grafoB.addAresta(4, 3, 0);
 
-        grafoF = grafoB.subtracaoGrafoAresta(2, 3);
+        grafoF = grafoB.subtracaoGrafo(null, 2, 3);
         assertEquals("Grafo: vertice;1,2;\naresta;1-2-0,1-3-0,2-1-0;", grafoF.toString());
     }
 }
