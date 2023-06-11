@@ -99,7 +99,7 @@ public class GrafoMutavel extends Grafo {
         File file = new File("./codigo/projeto2-grafos/arquivos/br.csv");
         Scanner entrada = new Scanner(file, "UTF-8");
 
-        String leitura = entrada.nextLine();
+        String leitura;
         String nomeVertive;
         int id;
         double latitude, longitude;
@@ -108,7 +108,8 @@ public class GrafoMutavel extends Grafo {
 
         id = 0;
         // preenchendo a lista de cidades
-        while (id < 115) {
+        while (entrada.hasNextLine()) {
+            leitura = entrada.nextLine();
             id++;
             nomeVertive = leitura.split(",")[0];
             latitude  = Double.parseDouble(leitura.split(",")[1]);
@@ -117,8 +118,6 @@ public class GrafoMutavel extends Grafo {
             Vertice newVertice = new Vertice(id, nomeVertive, latitude, longitude);
             this.addVertice(id, nomeVertive, latitude, longitude);
             listaDeVertices.add(newVertice);
-
-            leitura = entrada.nextLine();
         }
         entrada.close();
         
