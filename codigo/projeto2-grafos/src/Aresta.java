@@ -26,6 +26,7 @@ public class Aresta {
 
     private int peso;
     private int destino;
+    private int origem;
     private int id;
     private static int parseId = 0;
     private boolean visitada;
@@ -36,7 +37,17 @@ public class Aresta {
      * @param dest Vértice de destino
      */
     public Aresta(int peso, int destino){
-       init(parseId++, peso, destino);
+       init(parseId++, peso, 0, destino);
+    }
+
+    /**
+     * Construtor para arestas com peso, origem e destino. A aresta é criada como não-visitada.
+     * @param peso Peso da aresta
+     * @param origem Vértice de origem
+     * @param destino Vértice de destino
+     */
+    public Aresta(int peso, int origem, int destino){
+       init(parseId++, peso, origem, destino);
     }
 
     /**
@@ -44,7 +55,7 @@ public class Aresta {
      * @param dest Vértice de destino
      */
     public Aresta(int destino){
-        init(parseId++, 0, destino);
+        init(parseId++, 0, 0, destino);
     }
 
     /**
@@ -53,9 +64,10 @@ public class Aresta {
      * @param peso
      * @param destino
      */
-    private void init(int id, int peso, int destino){
+    private void init(int id, int peso, int origem, int destino){
         this.id = id;
         this.peso = peso;
+        this.origem = origem;
         this.destino = destino;
         this.visitada = false;
     }
@@ -67,6 +79,15 @@ public class Aresta {
     public int getId(){
         return this.id;
     }
+
+    /**
+     * Método get para retornar a origem da aresta
+     * @return id da aresta
+     */
+    public int getOrigem(){
+        return this.origem;
+    }
+    
     /**
      * Método de acesso para o peso da aresta
      * @return Peso da aresta (int)

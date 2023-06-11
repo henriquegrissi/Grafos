@@ -95,6 +95,18 @@ public class Vertice {
     }
 
     /**
+     * Adiciona uma aresta ponderada com origem destino e peso
+     * 
+     * @param peso Peso da aresta
+     * @param origem Vértice de origem
+     * @param destino Vértice de destino
+     * @return TRUE se foi inserida, FALSE caso já existisse e não foi inserida.
+     */
+    public boolean addAresta(int origem, int destino, int peso) {
+        return this.arestas.add(destino, new Aresta(peso, origem, destino));
+    }
+
+    /**
      * Valida se a aresta existe no grafo ou não
      * 
      * @param destino Vértice de destino

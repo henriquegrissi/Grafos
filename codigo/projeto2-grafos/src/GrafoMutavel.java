@@ -4,7 +4,6 @@ import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Scanner;
@@ -71,6 +70,26 @@ public class GrafoMutavel extends Grafo {
     }
 
     /**
+     * Adiciona uma aresta entre dois vértices do grafo, caso os dois vértices existam no grafo.
+     * Caso a aresta já exista, ou algum dos vértices não existir, o comando é ignorado e retorna FALSE.
+     * Armazena na aresta o id do vértice de origem E destino
+     * 
+     * @param origem  Vértice de origem
+     * @param destino Vértice de destino
+     * @param peso    Peso da aresta
+     * @return TRUE se foi inserida, FALSE caso contrário
+     */    
+    public boolean addArestaComOrigemDestino(int origem, int destino, int peso){
+        boolean adicionou = false;
+        Vertice saida = this.existeVertice(origem);
+        Vertice chegada = this.existeVertice(destino);
+        if (saida != null && chegada != null) {
+            adicionou = (saida.addAresta(origem, destino, peso) && chegada.addAresta(destino, origem, peso));
+        }
+        return adicionou;
+    }
+
+    /**
      * Método para remover a aresta com origem e destino de acordo com os parâmetros recebidos
      * 
      * @param origem Vértice de origem
@@ -131,14 +150,6 @@ public class GrafoMutavel extends Grafo {
                 }
             }
 
-            // ordena a lista de vertices
-            Collections.sort(listaDeVertices, (a,b) -> {
-                double distanciaA, distanciaB;
-                distanciaA = vertice.calcularDistancia(a.getLatitude(), a.getLongitude());
-                distanciaB = vertice.calcularDistancia(b.getLatitude(), b.getLongitude());
-                return Double.compare(distanciaA, distanciaB); 
-            });
-
             // adicionando as 4 cidades mais proxima da que estamos vendo
             for (int i = 0; i < 4; i++){
                 Vertice menorVertice = null;
@@ -159,7 +170,7 @@ public class GrafoMutavel extends Grafo {
                 // verifica se tem algum valor, caso tenha cria uma aresta para os vertices
                 if(origem != 0 && destino != 0){
                     vertice.addAresta(destino, peso);
-                    this.addAresta(origem, destino, peso);
+                    this.addArestaComOrigemDestino(origem, destino, peso);
                     // remove da lista a cidade já usada
                     listaDeCidadesMaisPerto.remove(menorVertice);
                 }
@@ -217,15 +228,13 @@ public class GrafoMutavel extends Grafo {
         arq.close();
     }
 
-    public void dijkstra(String origem, String destino) {
+    public String dijkstra(String origem, String destino) {
+        String retorno = "";
         Vertice verticeOrigem = vertices.findByName(origem);
         Vertice verticeDestino = vertices.findByName(destino);
         zerarVertices();
 
-        if (verticeOrigem == null || verticeDestino == null) {
-            System.out.println("O vertice de origem ou destino não existe no grafo.");
-            return null;
-        }else{
+        if (verticeOrigem != null && verticeDestino != null) {
             verticeOrigem.visitar();
             LinkedList<Integer> caminhoMinimo = new LinkedList<Integer>();
             caminhoMinimo = caminhoMinimo(verticeOrigem, verticeDestino);
@@ -234,16 +243,17 @@ public class GrafoMutavel extends Grafo {
                         for(int i : caminhoMinimo){
                             saida += " - " + i ;
                         }
-                        System.out.println("Esse e o caminho minimo: " + saida);
+                        retorno = ("Caminho minimo: " + saida);
                     } else {
-                        System.out.println("Não existe caminho para essa cidade");
-                    }
-                
-                
+                        retorno = ("Não existe caminho para essa cidade");
+                    }                                
         }
+
+        return retorno;
     } 
 
-    public LinkedList<Integer> caminhoMinimo(Vertice verticeOrigem, Vertice verticeDestino) { = new LinkedList<Integer>();
+    public LinkedList<Integer> caminhoMinimo(Vertice verticeOrigem, Vertice verticeDestino) { 
+        LinkedList<Integer> verticesVizinhos = new LinkedList<Integer>();
 
         verticesVizinhos = verticeOrigem.verticesVizinhos();
         
@@ -252,8 +262,8 @@ public class GrafoMutavel extends Grafo {
             return null;
         }
 
-        retorno = new LinkedList<Integer>();
-        caminho = new LinkedList<Integer>();
+        LinkedList<Integer> retorno = new LinkedList<Integer>();
+        LinkedList<Integer> caminho = new LinkedList<Integer>();
         caminho.add(verticeOrigem.getId());
 
         while ((!verticesVizinhos.isEmpty()) ) {
@@ -318,7 +328,9 @@ public class GrafoMutavel extends Grafo {
         return stringFormatar.toString();
     }
 
-    public double metodoPrim(int idVertice){
+    public String metodoPrim(int idVertice){
+        GrafoMutavel arvoreGeradoraMinima = new GrafoMutavel("Arvore Geradora Minima - Metodo Prim");
+
         Vertice vertice = vertices.find(idVertice);
 
         ABB<Vertice> conjuntoDeVerticesGrafo = this.vertices;
@@ -331,9 +343,10 @@ public class GrafoMutavel extends Grafo {
 
         if(vertice != null){
             conjuntoDeVerticesSelecionados.add(idVertice, vertice);
+            arvoreGeradoraMinima.addVertice(idVertice);
         }
 
-        while(conjuntoDeVerticesGrafo.size() != conjuntoDeVerticesSelecionados.size()){
+        while(conjuntoDeVerticesGrafo.size() != conjuntoDeVerticesSelecionados.size()){            
             Aresta arestasVerticeAtual[] = new Aresta[vertice.getAresta().size()];
             arestasVerticeAtual = vertice.getAresta().allElements(arestasVerticeAtual);
             
@@ -361,16 +374,23 @@ public class GrafoMutavel extends Grafo {
             }
             somatorioPesos += pesoMenorAresta;
             pesoMenorAresta = 0;
-            arestaMenorPeso.visitar();
+            
             conjuntoDeVerticesSelecionados.add(idVertice, vertice);
             conjuntoDeArestasAgm.add(arestaMenorPeso.getId(), arestaMenorPeso);
+
+            arvoreGeradoraMinima.addVertice(idVertice);
+            arvoreGeradoraMinima.addAresta(arestaMenorPeso.getOrigem(), arestaMenorPeso.destino(), arestaMenorPeso.peso());
             arestasDescobertasAhPercorrer.remove(arestaMenorPeso.getId());
         }
 
-        return somatorioPesos;
+        StringBuilder stringArvoreGeradora = new StringBuilder();
+        stringArvoreGeradora.append("---- ARVORE GERADORA METODO DE PRIM ----");
+        stringArvoreGeradora.append("\nSomatorio dos Pesos: " + somatorioPesos);
+        stringArvoreGeradora.append("\n" + arvoreGeradoraMinima.toString());
+
+        return stringArvoreGeradora.toString();
     }
     
-
     /**
      * Retorna uma string com o id e nome de cada um dos vértices do grafo
      * @return

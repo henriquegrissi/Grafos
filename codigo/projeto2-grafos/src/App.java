@@ -1,5 +1,4 @@
 import java.io.FileNotFoundException;
-import java.util.LinkedList;
 import java.util.Scanner;
 
 public class App {
@@ -165,6 +164,18 @@ public class App {
                     System.out.print("ID do vértice para exibir o grau e lista de vizinhos: ");
                     int idVertice = Integer.parseInt(teclado.nextLine());
                     System.out.println(grafoMutavel.retornaGrauEVizinhosDeUmVertice(idVertice));
+                    break;
+                case 11:
+                    if(grafoMutavel.vertices.size() == 0){
+                        System.out.println("Selecione primeiro a opção 1 ou 3 para gerar um grafo");
+                        break;
+                    }
+                    
+                    System.out.println(grafoMutavel.stringListaVertices());
+
+                    System.out.print("ID do vértice para gerar a arvore geradora minima com metodo de PRIM: ");
+                    int idVer = Integer.parseInt(teclado.nextLine());
+                    System.out.println(grafoMutavel.metodoPrim(idVer));
                     break;
                 default:
                     break;

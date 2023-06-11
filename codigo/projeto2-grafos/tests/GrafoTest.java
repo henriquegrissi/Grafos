@@ -230,34 +230,22 @@ public class GrafoTest {
         grafoB.addVertice(8);
         grafoB.addVertice(9);
 
-        grafoB.addAresta(1,4,1);
-        grafoB.addAresta(1,2,8);
-        grafoB.addAresta(2,1,8);
-        grafoB.addAresta(2,3,4);
-        grafoB.addAresta(2,5,5);
-        grafoB.addAresta(3,2,4);
-        grafoB.addAresta(3,4,7);
-        grafoB.addAresta(3,6,1);
-        grafoB.addAresta(4,1,1);
-        grafoB.addAresta(4,7,5);
-        grafoB.addAresta(4,3,7);
-        grafoB.addAresta(5,2,5);
-        grafoB.addAresta(5,6,2);
-        grafoB.addAresta(5,9,1);
-        grafoB.addAresta(6,7,8);
-        grafoB.addAresta(6,3,1);
-        grafoB.addAresta(6,8,6);
-        grafoB.addAresta(6,5,2);
-        grafoB.addAresta(7,4,5);
-        grafoB.addAresta(7,8,9);
-        grafoB.addAresta(7,6,8);
-        grafoB.addAresta(8,7,9);
-        grafoB.addAresta(8,6,6);
-        grafoB.addAresta(8,9,7);
-        grafoB.addAresta(9,5,1);
-        grafoB.addAresta(9,8,7);
+        grafoB.addArestaComOrigemDestino(1,4,1);
+        grafoB.addArestaComOrigemDestino(1,2,8);
+        grafoB.addArestaComOrigemDestino(2,3,4);
+        grafoB.addArestaComOrigemDestino(2,5,5);
+        grafoB.addArestaComOrigemDestino(3,4,7);
+        grafoB.addArestaComOrigemDestino(3,6,1);
+        grafoB.addArestaComOrigemDestino(4,7,5);
+        grafoB.addArestaComOrigemDestino(5,6,2);
+        grafoB.addArestaComOrigemDestino(5,9,1);
+        grafoB.addArestaComOrigemDestino(6,7,8);
+        grafoB.addArestaComOrigemDestino(6,8,6);
+        grafoB.addArestaComOrigemDestino(7,8,9);
+        grafoB.addArestaComOrigemDestino(8,9,7);
 
-        assertEquals(27, grafoB.metodoPrim(1));
+        System.out.println(grafoB.metodoPrim(1));
+        assertTrue(grafoB.metodoPrim(1).contains("Somatorio dos Pesos: 27"));
     }
 
     @Test
@@ -297,8 +285,8 @@ public class GrafoTest {
     @Test
     public void deveRetornarCaminhoMinimoEntreDoisVertices(){
         GrafoMutavel grafoMut= new GrafoMutavel("grafoMut");
-        
-        assertEquals("- 15 - 60 - 65 - 73 - 94 - 44 - 82 - 87 - 90 - 42 - 28 - 1;", grafoMut.dijkstra("Campinas", "Sao Paulo"));
+
+        assertTrue(grafoMut.dijkstra("Campinas", "Sao Paulo").contains("- 15 - 60 - 65 - 73 - 94 - 44 - 82 - 87 - 90 - 42 - 28 - 1;"));
 
     }
 }
