@@ -179,20 +179,9 @@ public class App {
                     String verticeOrigem = teclado.nextLine();
                     System.out.println("Digite o nome do vértice de destino: ");
                     String verticeDestino = teclado.nextLine();
-
-                    LinkedList<Integer> caminhoMinimo = new LinkedList<Integer>();
-                    
-                    caminhoMinimo = grafoMutavel.dijkstra(verticeOrigem, verticeDestino);
-                    if (caminhoMinimo != null){
-                        String saida = "";
-                        for(int i : caminhoMinimo){
-                            saida += " - " + i ;
-                        }
-                        System.out.println("Esse e o caminho minimo: " + saida);
-                    } else {
-                        System.out.println("Não existe caminho para essa cidade");
-                    }
+                    grafoMutavel.dijkstra(verticeOrigem, verticeDestino);
     }
+                        
 
     private static void gerarSubGrafo(GrafoMutavel grafo) {
         Lista<Integer> verticesSubGrafo = new Lista<>();
