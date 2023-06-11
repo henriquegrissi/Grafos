@@ -299,4 +299,12 @@ public class GrafoTest {
         grafoF = grafoB.subtracaoGrafo(null, 2, 3);
         assertEquals("Grafo: vertice;1,2;\naresta;1-2-0,1-3-0,2-1-0;", grafoF.toString());
     }
+
+    @Test
+    public void deveRetornarCaminhoMinimoEntreDoisVertices(){
+        GrafoMutavel grafoMut= new GrafoMutavel("grafoMut");
+        grafoMut.dijkstra("Campinas", "Sao Paulo");
+        assertEquals("- 15 - 60 - 65 - 73 - 94 - 44 - 82 - 87 - 90 - 42 - 28 - 1;", grafoMut.toString());  
+
+    }
 }
