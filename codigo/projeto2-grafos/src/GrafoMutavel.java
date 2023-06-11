@@ -220,18 +220,19 @@ public class GrafoMutavel extends Grafo {
     public LinkedList<Integer> Dijkstra(String origem, String destino) {
         Vertice verticeOrigem = vertices.findByName(origem);
         Vertice verticeDestino = vertices.findByName(destino);
+        zerarVertices();
 
         if (verticeOrigem == null || verticeDestino == null) {
             System.out.println("O vertice de origem ou destino não existe no grafo.");
             return null;
         }else{
+            verticeOrigem.visitar();
             return caminhoMinimo(verticeOrigem, verticeDestino);
         }
     } 
 
     public LinkedList<Integer> caminhoMinimo(Vertice verticeOrigem, Vertice verticeDestino) {
         LinkedList<Integer> retorno, caminho, verticesVizinhos = new LinkedList<Integer>();
-        boolean valid = true;
 
         verticesVizinhos = verticeOrigem.verticesVizinhos();
         
@@ -240,19 +241,12 @@ public class GrafoMutavel extends Grafo {
             return null;
         }
 
+        retorno = new LinkedList<Integer>();
         caminho = new LinkedList<Integer>();
         caminho.add(verticeOrigem.getId());
 
-        // verifica se um dos vizinhos e o vertice desejado
-        for (int i : verticesVizinhos) {
-            vertices.find(i).visitar();
-            if (i == verticeDestino.getId()){
-                caminho.add(i);
-                return caminho;
-            }
-        }
-
-        while ((verticesVizinhos.size() > 0 || valid) ) {
+        
+        while ((!verticesVizinhos.isEmpty()) ) {
             // pega o primeiro vizinho
             int vizinho = verticesVizinhos.get(0);
             
@@ -263,17 +257,31 @@ public class GrafoMutavel extends Grafo {
                 continue;
             }
 
-            // caso o vizinho não seja o que procura ele procura nos filhos de cada vertice
-            retorno = caminhoMinimo(vertices.find(vizinho), verticeDestino);
-            if (retorno.getLast() == verticeDestino.getId()){
-                valid = false;
-                caminho.addAll(retorno);
-            }
+            vertices.find(vizinho).visitar();
 
+            // caso o vizinho não seja o que procura ele procura nos filhos de cada vertice
+            if(vertices.find(vizinho).getId() == verticeDestino.getId()){
+                caminho.add(vizinho);
+                return caminho;
+            }else {
+                retorno = caminhoMinimo(vertices.find(vizinho), verticeDestino);
+            }
+            
+            if(retorno.getLast() == verticeDestino.getId())
+                break;
             // caso não seja o que procura ele remove da lista de viznhos
             verticesVizinhos.removeFirst();
         }
+        caminho.addAll(retorno);
         return caminho;
+    }
+
+    private void zerarVertices() {
+        Vertice arrayVertice[] = new Vertice[vertices.size()]; 
+        vertices.allElements(arrayVertice);
+        for(Vertice vertice : arrayVertice ) {
+            vertice.limparVisita();
+        }
     }
 
 }

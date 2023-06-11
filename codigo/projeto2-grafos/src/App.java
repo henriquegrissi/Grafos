@@ -168,10 +168,11 @@ public class App {
                     
                     caminhoMinimo = grafoMutavel.Dijkstra(verticeOrigem, verticeDestino);
                     if (caminhoMinimo != null){
+                        String saida = "";
                         for(int i : caminhoMinimo){
-                            System.out.println(i);
-                            System.out.println("-");
+                            saida += " - " + i ;
                         }
+                        System.out.println("Esse e o caminho minimo: " + saida);
                     } else {
                         System.out.println("Não existe caminho para essa cidade");
                     }
