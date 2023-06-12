@@ -126,19 +126,22 @@ public class GrafoTest {
         assertEquals(5, meuGrafo.tamanho());
     }
 
-    //  @Test
-    //  public void deveRealizarBuscaEmProfundidade() {
-    //     GrafoMutavel grafoB = new GrafoMutavel("4");
+      @Test
+      public void deveRealizarBuscaEmProfundidade() {
+         GrafoMutavel grafoB = new GrafoMutavel("4");
 
-    //     grafoB.addVertice(1);
-    //     grafoB.addVertice(2);
-    //     grafoB.addVertice(3);
+        grafoB.addVertice(1);
+        grafoB.addVertice(2);
+        grafoB.addVertice(3);
+        grafoB.addVertice(4);
 
-    //     grafoB.addAresta(1, 2, 0);
-    //     grafoB.addAresta(2, 3, 0);
+        grafoB.addAresta(1, 2, 0);
+        grafoB.addAresta(2, 3, 0);
+        grafoB.addAresta(3, 1, 0);
+        grafoB.addAresta(4, 3, 0);
      
-    //     assertEquals("a", grafoB.dfs(2));
-    //  }
+        assertEquals("1 3 4 2 ", grafoB.dfs(1));
+     }
 
     @Test
     public void retornaGraudoVertice3() {

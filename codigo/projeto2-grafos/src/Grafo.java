@@ -1,5 +1,11 @@
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
+import java.util.Stack;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.stream.Stream;
+
 /** 
  * MIT License
  *
@@ -171,28 +177,33 @@ public class Grafo {
      * @return String em ordem
      */
     public String dfs(int idVerticeInicio) {
+        for (int i = 1; i < this.vertices.size(); i++) { 
+            this.vertices.find(i).limparVisita(); // Reseta todos os nós novamente para que a busca possa ser executada
+        }
         StringBuilder str = new StringBuilder(idVerticeInicio + " ");
-
         this.vertices.find(idVerticeInicio).visitar();
-
+        Stack stack = new Stack<Integer>();
+        stack.push(idVerticeInicio);
+        
         // se cria uma lista de vizinhos do vertice inicial
-        Lista<Integer> vizinhosList = this.vertices.find(idVerticeInicio).vizinhos();
-        for (int i = 1; i <= vizinhosList.size();) { // percorre essa lista de vizinhos
-            search_dfs(this.vertices.find(i), str, i); // entra no metodo e faz ele percorrer cada vizinho do
-                                                                // vizinho
-            str.append(this.vertices.find(idVerticeInicio).getId()); // adiciona as arestas do vertice
-                                                                                       // original para seus vizinhos
-            str.append(" ");
-            vizinhosList.remove(i); // remove da lista o vizinho já percorrido
-        }
-        this.vertices.find(idVerticeInicio).visitar(); // mostra que o vertice foi visitado já
-        str.append(idVerticeInicio); // adiciona o vertice original
-        str.append(" ");
+        while (!stack.empty()) {
 
-        for (int i = 1; i < this.vertices.size(); i++) {
-            this.vertices.find(i).limparVisita();
+            Integer index = search_dfs((Integer) stack.peek());
+            if (index == -1) { // não existe ? Remove um nó da pilha
+                stack.pop();
+            } else { // existe
+                this.vertices.find(index).visitar(); // executa os passos da regra 1: visite, marque como visitado e
+                                                     // empilhe
+                str.append(index);
+                str.append(" ");
+                stack.push(index);
+            }
         }
-        System.out.println(str.toString());
+
+        for (int i = 1; i < this.vertices.size(); i++) { // Se chegou aqui é porque não haviam mais nós na pilha
+            this.vertices.find(i).limparVisita(); // Reseta todos os nós novamente para que a busca possa ser executada
+            // depois
+        }
         return str.toString();
     }
 
@@ -203,21 +214,26 @@ public class Grafo {
      * @param str
      * @param i
      */
-    public void search_dfs(Vertice vertice, StringBuilder str, int i) {
-        if (!vertice.visitado()) { // se não foi visitado ele entra
-            vertice.visitar(); // adiciona que foi visitado
-            Lista<Integer> vizinhosList = vertice.vizinhos(); // preenche uma list com os seus vizinhos
-            for (int x = 1; x <= vizinhosList.size();) { // percorre essa lista de vizinhos
-                search_dfs(this.vertices.find(x), str, x); // entra no metodo e faz ele percorrer cada vizinho
-                                                                    // do vizinho
-                vizinhosList.remove(x); // remove da lista o vizinho já percorrido
-                str.append(vertice.getId());// adiciona as arestas do vertice original para seus
-                                                              // vizinhos
-                str.append(" ");
+    public int search_dfs(Integer id) {
+        // Lista<Integer> vizinhos = this.vertices.find(id).vizinhos();
+        Integer[] arrayVizinhos = new Integer[this.vertices.find(id).vizinhos().size()];
+        arrayVizinhos = this.vertices.find(id).vizinhos().allElements(arrayVizinhos);
+        int tamanho = arrayVizinhos.length;
+        int tamanho2 = arrayVizinhos.length;
+        for (int k = 0; k < arrayVizinhos.length; k++) {
+            if (this.vertices.find(arrayVizinhos[k]).visitado()) {
+                tamanho2--;
             }
         }
-        str.append(i);
-        str.append(" ");
+        for (int i = 0; i < tamanho; i++) {
+            int j = arrayVizinhos[i];
+            if (j > tamanho2 && !this.vertices.find(j).visitado()) { // utiliza a matriz de adjacências para determinar
+                                                                      // se para um nó existem nós adjacentes a ele
+                return j; // caso exista, retorna a posição deste nó no array de nós
+            }
+            arrayVizinhos = this.vertices.find(j).vizinhos().allElements(arrayVizinhos);
+        }
+        return -1;
     }
 
     /**
@@ -239,9 +255,8 @@ public class Grafo {
         if (origem != null && destino != null) 
             x = destino;
 
-        if (idVertice != 0){
+        if (idVertice != 0)
             y = idVertice;
-        } 
             
         if(x == null && y == null)
             throw new IllegalArgumentException();
