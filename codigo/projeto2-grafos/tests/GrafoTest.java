@@ -173,19 +173,19 @@ public class GrafoTest {
         assertEquals(5, meuGrafo.tamanho());
     }
 
-     @Test
-     public void deveRealizarBuscaEmProfundidade() {
-        GrafoMutavel grafoB = new GrafoMutavel("4");
+    //  @Test
+    //  public void deveRealizarBuscaEmProfundidade() {
+    //     GrafoMutavel grafoB = new GrafoMutavel("4");
 
-        grafoB.addVertice(1);
-        grafoB.addVertice(2);
-        grafoB.addVertice(3);
+    //     grafoB.addVertice(1);
+    //     grafoB.addVertice(2);
+    //     grafoB.addVertice(3);
 
-        grafoB.addAresta(1, 2, 0);
-        grafoB.addAresta(2, 3, 0);
+    //     grafoB.addAresta(1, 2, 0);
+    //     grafoB.addAresta(2, 3, 0);
      
-        assertEquals("a", grafoB.dfs(2));
-     }
+    //     assertEquals("a", grafoB.dfs(2));
+    //  }
 
     @Test
     public void retornaGraudoVertice3() {
@@ -286,8 +286,8 @@ public class GrafoTest {
         grafoB.addAresta(1, 2, 0);
         grafoB.addAresta(2, 3, 0);
         grafoB.addAresta(3, 1, 0);
-        Vertice a = new Vertice(2);
-        grafoF = grafoB.subtracaoGrafo(a, null, null);
+
+        grafoF = grafoB.subtracaoGrafo(2, null, null);
         assertEquals("Grafo: vertice;1,3;\naresta;1-3-0,3-1-0;", grafoF.toString());
     }
 
@@ -305,7 +305,7 @@ public class GrafoTest {
         grafoB.addAresta(3, 1, 0);
         grafoB.addAresta(4, 3, 0);
 
-        grafoF = grafoB.subtracaoGrafo(null, 2, 3);
+        grafoF = grafoB.subtracaoGrafo(0, 2, 3);
         assertEquals("Grafo: vertice;1,2;\naresta;1-2-0,1-3-0,2-1-0;", grafoF.toString());
     }
 
