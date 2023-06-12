@@ -249,6 +249,32 @@ public class GrafoTest {
     }
 
     @Test
+    public void deveCalcularAgmDeGrafoComMaisDeUmComponenteComMetodoDePrim() {
+        GrafoMutavel grafoB = new GrafoMutavel("grafob");
+
+        grafoB.addVertice(1);
+        grafoB.addVertice(2);
+        grafoB.addVertice(3);
+        grafoB.addVertice(4);
+        grafoB.addVertice(5);
+        grafoB.addVertice(6);
+        grafoB.addVertice(7);
+        grafoB.addVertice(8);
+        grafoB.addVertice(9);
+
+        grafoB.addArestaComOrigemDestino(1,2,1);
+        grafoB.addArestaComOrigemDestino(1,3,8);
+        grafoB.addArestaComOrigemDestino(2,5,8);
+        grafoB.addArestaComOrigemDestino(3,4,4);
+        grafoB.addArestaComOrigemDestino(4,5,5);
+        grafoB.addArestaComOrigemDestino(4,6,7);
+        grafoB.addArestaComOrigemDestino(7,8,1);
+
+        System.out.println(grafoB.metodoPrim(1));
+        assertTrue(grafoB.metodoPrim(1).contains("Somatorio dos Pesos: 25"));
+    }
+
+    @Test
     public void deveSubtrairVertice() throws CloneNotSupportedException {
         GrafoMutavel grafoB = new GrafoMutavel("grafob");
         Grafo grafoF = new GrafoMutavel("grafof");

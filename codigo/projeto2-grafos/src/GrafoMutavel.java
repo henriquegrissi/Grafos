@@ -338,7 +338,7 @@ public class GrafoMutavel extends Grafo {
         
         ABB<Aresta> conjuntoDeArestasAgm = new ABB<>();
         ABB<Aresta> arestasDescobertasAhPercorrer = new ABB<>();
-        int pesoArestaAtual, pesoMenorAresta = 0, somatorioPesos = 0;
+        int pesoArestaAtual, pesoMenorAresta = 0, somatorioPesos = 0, qtdVerticesPercorridos = 0;
         Vertice verticeDestino = null;
 
         if(vertice != null){
@@ -346,7 +346,7 @@ public class GrafoMutavel extends Grafo {
             arvoreGeradoraMinima.addVertice(idVertice);
         }
 
-        while(conjuntoDeVerticesGrafo.size() != conjuntoDeVerticesSelecionados.size()){            
+        while(conjuntoDeVerticesGrafo.size() != qtdVerticesPercorridos){            
             Aresta arestasVerticeAtual[] = new Aresta[vertice.getAresta().size()];
             arestasVerticeAtual = vertice.getAresta().allElements(arestasVerticeAtual);
             
@@ -372,15 +372,22 @@ public class GrafoMutavel extends Grafo {
                     idVertice = idVerticeDestino;
                 }
             }
-            somatorioPesos += pesoMenorAresta;
-            pesoMenorAresta = 0;
-            
-            conjuntoDeVerticesSelecionados.add(idVertice, vertice);
-            conjuntoDeArestasAgm.add(arestaMenorPeso.getId(), arestaMenorPeso);
 
-            arvoreGeradoraMinima.addVertice(idVertice);
-            arvoreGeradoraMinima.addAresta(arestaMenorPeso.getOrigem(), arestaMenorPeso.destino(), arestaMenorPeso.peso());
-            arestasDescobertasAhPercorrer.remove(arestaMenorPeso.getId());
+            if(arestaMenorPeso != null){
+                somatorioPesos += pesoMenorAresta;
+                pesoMenorAresta = 0;
+            
+                conjuntoDeVerticesSelecionados.add(idVertice, vertice);
+                conjuntoDeArestasAgm.add(arestaMenorPeso.getId(), arestaMenorPeso);
+
+                arvoreGeradoraMinima.addVertice(idVertice);
+                arvoreGeradoraMinima.addAresta(arestaMenorPeso.getOrigem(), arestaMenorPeso.destino(), arestaMenorPeso.peso());
+                arestasDescobertasAhPercorrer.remove(arestaMenorPeso.getId());
+
+                qtdVerticesPercorridos = conjuntoDeVerticesSelecionados.size();
+            } else {                
+                qtdVerticesPercorridos = conjuntoDeVerticesGrafo.size();
+            }
         }
 
         StringBuilder stringArvoreGeradora = new StringBuilder();
