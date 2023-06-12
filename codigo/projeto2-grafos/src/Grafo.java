@@ -1,8 +1,5 @@
 import java.util.LinkedList;
 import java.util.Queue;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 /** 
  * MIT License
  *
@@ -31,27 +28,8 @@ import java.util.logging.Logger;
  * Classe básica para um Grafo simples não direcionado.
  */
 public class Grafo {
-    private static final Logger logger = Logger.getLogger(Grafo.class.getName());
-
     private final String nome;
     protected ABB<Vertice> vertices;
-
-    /*
-     * Cria e retorna o grafo completo de acordo com a ordem recebida. Caso a ordem
-     * seja menor ou igual a zero ignora e exibe um warning
-     * 
-     * @param ordem (Ordem do grafo - quantidade de vértices)
-     * 
-     * @return Grafo (Grafo completo criado)
-     */
-    public static Grafo grafoCompleto(int ordem) {
-        if (ordem <= 0) {
-            logger.log(Level.WARNING, "Ordem do grafo deve ser maior que zero");
-            return null;
-        }
-
-        return new GrafoCompleto(ordem);
-    }
 
     /**
      * Construtor. Cria um grafo vazio com um nome escolhido pelo usuário. Em caso
@@ -122,32 +100,6 @@ public class Grafo {
             }
         }
         return true;
-    }
-
-    /**
-     * Cria um subgrafo de um grafo criado anteriormente a partir de uma lista de
-     * vértices passados como parâmetro
-     * 
-     * @param vertices Recebe uma lista de vértices, para criar o subgrafo
-     * @return Subgrafo
-     */
-    public Grafo subGrafo(Lista<Integer> vertices) {
-        GrafoMutavel subGrafoMutavel = new GrafoMutavel("Subgrafo de" + this.nome);
-        Integer vetor[] = new Integer[vertices.size()];
-        vetor = vertices.allElements(vetor);
-
-        for (int i = 0; i < vetor.length; i++) {
-            subGrafoMutavel.addVertice(vetor[i]);
-        }
-        for (int i = 0; i < vetor.length; i++) {
-            for (int x = 0; x < vetor.length; x++) {
-                if ((this.existeAresta(vetor[i], vetor[x]) != null)
-                        && (subGrafoMutavel.existeVertice(vetor[x]) != null)) {
-                    subGrafoMutavel.addAresta(vetor[i], vetor[x], 0); // Se sim, adiciona essa aresta no subgrafo
-                }
-            }
-        }
-        return subGrafoMutavel;
     }
 
     /**
