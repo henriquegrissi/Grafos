@@ -255,6 +255,7 @@ public class GrafoMutavel extends Grafo {
 
     public LinkedList<Integer> caminhoMinimo(Vertice verticeOrigem, Vertice verticeDestino) { 
         LinkedList<Integer> verticesVizinhos = new LinkedList<Integer>();
+        int tamanho = Integer.MAX_VALUE;
 
         verticesVizinhos = verticeOrigem.verticesVizinhos();
         
@@ -263,7 +264,7 @@ public class GrafoMutavel extends Grafo {
             return null;
         }
 
-        LinkedList<Integer> retorno = new LinkedList<Integer>();
+        LinkedList<Integer> retorno, retornoFinal = new LinkedList<Integer>();
         LinkedList<Integer> caminho = new LinkedList<Integer>();
         caminho.add(verticeOrigem.getId());
 
@@ -286,14 +287,17 @@ public class GrafoMutavel extends Grafo {
                 return caminho;
             }else {
                 retorno = caminhoMinimo(vertices.find(vizinho), verticeDestino);
+                if (tamanho > retorno.size() && retorno.getLast() == verticeDestino.getId()){
+                    tamanho = retorno.size();
+                    retornoFinal = retorno;
+                }
+
             }
 
-            if(retorno.getLast() == verticeDestino.getId())
-                break;
             // caso não seja o que procura ele remove da lista de viznhos
             verticesVizinhos.removeFirst();
         }
-        caminho.addAll(retorno);
+        caminho.addAll(retornoFinal);
         return caminho;
     }
 
