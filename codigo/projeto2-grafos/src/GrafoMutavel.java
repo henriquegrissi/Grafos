@@ -241,7 +241,9 @@ public class GrafoMutavel extends Grafo {
                         String saida = "";
                         for(int i : caminhoMinimo){
                             saida += " - " + i ;
+                            saida += " (" + vertices.find(i).getNome() + ")";
                         }
+                        
                         retorno = ("Caminho minimo: " + saida);
                     } else {
                         retorno = ("Não existe caminho para essa cidade");
@@ -327,6 +329,11 @@ public class GrafoMutavel extends Grafo {
         return stringFormatar.toString();
     }
 
+    /**
+     * Retorna o resultado da geração da arvore mínima através do método PRIM
+     * @param idVertice
+     * @return String formatada com os vértices e arestas da árvore
+     */
     public String metodoPrim(int idVertice){
         GrafoMutavel arvoreGeradoraMinima = new GrafoMutavel("Arvore Geradora Minima - Metodo Prim");
 
