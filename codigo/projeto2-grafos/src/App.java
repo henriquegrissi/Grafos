@@ -18,17 +18,12 @@ public class App {
         limparTela();
         System.out.println("Menu");
         System.out.println("==========================");
-        System.out.println("1 - Carregar Grafo");
-        System.out.println("2 - Salvar Grafo");
-        System.out.println("3 - Criar Grafo com aresta ponderada");
-        System.out.println("4 - Criar Grafo com aresta nao ponderada");
-        System.out.println("5 - Gerar Grafo Completo");
-        System.out.println("6 - Gerar Subgrafo ");
-        System.out.println("7 - Fazer pesquisa DFS");
-        System.out.println("8 - Fazer pesquisa BFS");
-        System.out.println("9 - Encontrar caminho minimo");
-        System.out.println("10 - Exibir grau e vizinhos de um vértice especifico");
-        System.out.println("11 - Gerar AGM a partir de um vértice");
+        System.out.println("1 - Fazer pesquisa em profundidade");
+        System.out.println("2 - Fazer pesquisa em largura");
+        System.out.println("3 - Encontra o caminho minimo entre 2 vertices");
+        System.out.println("4 - Retornar o grau e vizinhos de um vertice especifico");
+        System.out.println("5 - Realizar a subtracao de um vertice/aresta");
+        System.out.println("6 - Gerar a AGM a partir de um vertice (Metodo de Prim)");
         System.out.println("0 - Sair");
         System.out.print("\nDigite sua opção: ");
         int opcao = Integer.parseInt(teclado.nextLine());
@@ -39,9 +34,21 @@ public class App {
     public static void main(String[] args) throws Exception {
         limparTela();
 
-        String verticeEntradaTeclado, nomeArquivo;
+        String verticeEntradaTeclado;
         Grafo grafo = new Grafo("");
         GrafoMutavel grafoMutavel = new GrafoMutavel("");
+
+        try {
+            grafoMutavel.carregar();
+        } catch (FileNotFoundException e) {
+            System.out.println("Arquivo não existente, você deve primeiro gerar e salvar o grafo " + e);
+        }
+
+        try {
+            grafoMutavel.salvar("Grafo cidades");
+        } catch (Exception e) {
+            System.out.println("Não existe grafo para ser salvo, você deve primeiro gerar o grafo " + e);
+        }        
 
         int opcao = -1;
 
@@ -50,83 +57,8 @@ public class App {
             limparTela();
             switch (opcao) {
                 case 1:
-                    try {
-                        grafoMutavel.carregar();
-                    } catch (FileNotFoundException e) {
-                        System.out.println("Arquivo não existente, você deve primeiro gerar e salvar o grafo " + e);
-                    }
-                    break;
-
-                case 2:
-                    System.out.println("Nome do arquivo: ");
-                    nomeArquivo = teclado.nextLine();
-                    try {
-                        grafoMutavel.salvar(nomeArquivo);
-                    } catch (Exception e) {
-                        System.out.println("Não existe grafo para ser salvo, você deve primeiro gerar o grafo " + e);
-                    }
-
-                    break;
-                
-                    case 3:
-                    System.out.println("Grafo COM aresta ponderada\n");
-                    grafoMutavel.addVertice(1);
-                    grafoMutavel.addVertice(2);
-                    grafoMutavel.addVertice(3);
-                    grafoMutavel.addVertice(4);
-                    grafoMutavel.addVertice(5);
-                    grafoMutavel.addVertice(6);
-                    grafoMutavel.addAresta(1, 2, 3);
-                    grafoMutavel.addAresta(4, 5, 6);
-                    System.out.println(grafoMutavel.toString());
-
-                    break;
-
-                case 4:
-                    grafoMutavel.addVertice(7);
-                    grafoMutavel.addVertice(8);
-                    grafoMutavel.addVertice(9);
-                    grafoMutavel.addVertice(10);
-                    grafoMutavel.addVertice(11);
-                    grafoMutavel.addVertice(12);
-                    grafoMutavel.addAresta(7, 8, 0);
-                    grafoMutavel.addAresta(10, 11, 0);
-                    System.out.println(grafoMutavel.toString());
-                    break;
-
-                case 5:
-                    System.out.println("Ordem do grafo: ");
-                    int ordem = Integer.parseInt(teclado.nextLine());
-                    grafo = Grafo.grafoCompleto(ordem);
-                    System.out.println(grafo.toString());
-                    break;
-
-                case 6:
-                    grafoMutavel.addVertice(1);
-                    grafoMutavel.addVertice(2);
-                    grafoMutavel.addVertice(3);
-                    grafoMutavel.addVertice(4);
-                    grafoMutavel.addVertice(5);
-
-                    grafoMutavel.addAresta(1, 2, 0);
-                    grafoMutavel.addAresta(1, 3, 0);
-                    grafoMutavel.addAresta(1, 4, 0);
-                    grafoMutavel.addAresta(1, 5, 0);
-                    grafoMutavel.addAresta(2, 3, 0);
-                    grafoMutavel.addAresta(2, 4, 0);
-                    grafoMutavel.addAresta(2, 5, 0);
-                    grafoMutavel.addAresta(3, 4, 0);
-                    grafoMutavel.addAresta(3, 5, 0);
-                    grafoMutavel.addAresta(4, 5, 0);
-
-                    grafoMutavel.salvar("GrafoMutavel");
-
-                    gerarSubGrafo(grafoMutavel);
-                    break;
-
-                case 7:
-                    if(grafo.vertices.size() == 0){
-                        System.out.println("Selecione primeiro a opção 5 para gerar um grafo");
+                    if(grafoMutavel.vertices.size() == 0){
+                        System.out.println("Grafo deve ser gerado antes de executar essa função");
                         break;
                     }
                     verticeEntradaTeclado = "";
@@ -136,26 +68,28 @@ public class App {
                     System.out.println(grafo.dfs(Integer.parseInt(verticeEntradaTeclado)).toString());
                     break;
 
-                case 8:
-                    if(grafo.vertices.size() == 0){
-                        System.out.println("Selecione primeiro a opção 5 para gerar um grafo");
+                case 2:
+                    if(grafoMutavel.vertices.size() == 0){
+                        System.out.println("Grafo deve ser gerado antes de executar essa função");
                         break;
-                    }                
+                    }               
                     System.out.println("\nDigite o vertice: ");
                     verticeEntradaTeclado = teclado.nextLine();
                     System.out.println("Retorno da pesquisa bfs");
                     System.out.println(grafo.bfs(Integer.parseInt(verticeEntradaTeclado)).toString());
                     break;
-                case 9:
+                
+                case 3:
                     if(grafoMutavel.vertices.size() == 0){
-                        System.out.println("Selecione primeiro a opção 1 ou 3 para gerar um grafo");
+                        System.out.println("Grafo deve ser gerado antes de executar essa função");
                         break;
                     }
                     caminhoMinimo(grafoMutavel);
                     break;
-                case 10:
+
+                case 4:
                     if(grafoMutavel.vertices.size() == 0){
-                        System.out.println("Selecione primeiro a opção 1 ou 3 para gerar um grafo");
+                        System.out.println("Grafo deve ser gerado antes de executar essa função");
                         break;
                     }
                     
@@ -165,9 +99,14 @@ public class App {
                     int idVertice = Integer.parseInt(teclado.nextLine());
                     System.out.println(grafoMutavel.retornaGrauEVizinhosDeUmVertice(idVertice));
                     break;
-                case 11:
+
+                case 5:
+                    //subtração de vértice aresta
+                    break;
+
+                case 6:
                     if(grafoMutavel.vertices.size() == 0){
-                        System.out.println("Selecione primeiro a opção 1 ou 3 para gerar um grafo");
+                        System.out.println("Grafo deve ser gerado antes de executar essa função");
                         break;
                     }
                     
@@ -176,7 +115,8 @@ public class App {
                     System.out.print("ID do vértice para gerar a arvore geradora minima com metodo de PRIM: ");
                     int idVer = Integer.parseInt(teclado.nextLine());
                     System.out.println(grafoMutavel.metodoPrim(idVer));
-                    break;
+                    break;                
+
                 default:
                     break;
             }
@@ -187,25 +127,10 @@ public class App {
 
     private static void caminhoMinimo(GrafoMutavel grafoMutavel) {
         System.out.println("Digite o nome do vértice de origem: ");
-                    String verticeOrigem = teclado.nextLine();
-                    System.out.println("Digite o nome do vértice de destino: ");
-                    String verticeDestino = teclado.nextLine();
-                    grafoMutavel.dijkstra(verticeOrigem, verticeDestino);
-    }
-                        
-
-    private static void gerarSubGrafo(GrafoMutavel grafo) {
-        Lista<Integer> verticesSubGrafo = new Lista<>();
-        int opcao, vertice;
-        do {
-            System.out.println("Vértice que deseja para gerar o subgrafo: ");
-            vertice = Integer.parseInt(teclado.nextLine());
-            verticesSubGrafo.add(vertice);
-
-            System.out.println("Digite um número para continuar a selecionar vértices ou 0 para sair: ");
-            opcao = Integer.parseInt(teclado.nextLine());
-        } while (opcao != 0);
-
-        System.out.println(grafo.subGrafo(verticesSubGrafo).toString());
+        String verticeOrigem = teclado.nextLine();
+        System.out.println("Digite o nome do vértice de destino: ");
+        String verticeDestino = teclado.nextLine();
+        
+        System.out.println(grafoMutavel.dijkstra(verticeOrigem, verticeDestino));
     }
 }
