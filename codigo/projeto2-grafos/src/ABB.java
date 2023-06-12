@@ -90,13 +90,4 @@ public class ABB<T> {
         T[] allData = this.data.values().toArray(array);
         return allData;
     }
-
-    public Vertice findByName(String origem) {
-        for (T vertice : this.data.values()) {
-            if (((Vertice) vertice).getNome().equals(origem)) {
-                return (Vertice) vertice;
-            }
-        }
-        return null;
-    }
 }

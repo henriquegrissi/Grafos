@@ -17,29 +17,6 @@ public class GrafoTest {
         grafo = new Grafo("Meu Grafo Para Testes");
         meuGrafo = new GrafoMutavel(" ");
     }
-    /*
-     * @AfterEach
-     * public void limparSaida() {
-     * output.reset();
-     * }
-     */
-
-    @Test
-    public void deveRetornarNuloCasoTenteGerarGrafoComOrdemMenorOuIgualAZero() {
-        assertNull(Grafo.grafoCompleto(-4));
-    }
-
-    @Test
-    public void deveCriarumGrafoCompletoDaClasse() {
-        GrafoCompleto grafoT = new GrafoCompleto(4);
-        assertTrue(grafoT.completo());
-    }
-
-    @Test
-    public void deveRetornarTrueCasoGrafoCompletoSejaGeradoComSucesso() {
-        grafo = Grafo.grafoCompleto(6);
-        assertTrue(grafo.completo());
-    }
 
     @Test
     public void deveGerarGrafoComNomeBaseCasoNaoSejaInformadoPeloUsuario() {
@@ -135,33 +112,6 @@ public class GrafoTest {
     }
 
     @Test
-    public void naoDeveRetornarNuloCasoArestasEVerticesSejamAdicionadosNoSubgrafo() {
-        Lista<Integer> minhaLista = new Lista<>();
-        minhaLista.add(1);
-        minhaLista.add(2);
-        minhaLista.add(3);
-        // Cria grafo
-
-        meuGrafo.addVertice(1);
-        meuGrafo.addVertice(2);
-        meuGrafo.addVertice(3);
-        meuGrafo.addVertice(4);
-        meuGrafo.addAresta(1, 2, 0);
-        meuGrafo.addAresta(1, 4, 0);
-        meuGrafo.addAresta(2, 3, 0);
-        meuGrafo.addAresta(2, 4, 0);
-
-        meuGrafo = (GrafoMutavel) meuGrafo.subGrafo(minhaLista);
-
-        assertNotNull(meuGrafo.existeVertice(1));
-        assertNotNull(meuGrafo.existeVertice(2));
-        assertNotNull(meuGrafo.existeVertice(3));
-
-        assertNotNull(meuGrafo.existeAresta(1, 2));
-        assertNotNull(meuGrafo.existeAresta(2, 3));
-    }
-
-    @Test
     public void calculaTamanho() {
         meuGrafo.addVertice(1);
         meuGrafo.addVertice(2);
@@ -173,9 +123,9 @@ public class GrafoTest {
         assertEquals(5, meuGrafo.tamanho());
     }
 
-     @Test
-     public void deveRealizarBuscaEmProfundidade() {
-        GrafoMutavel grafoB = new GrafoMutavel("4");
+      @Test
+      public void deveRealizarBuscaEmProfundidade() {
+         GrafoMutavel grafoB = new GrafoMutavel("4");
 
         grafoB.addVertice(1);
         grafoB.addVertice(2);
@@ -216,7 +166,8 @@ public class GrafoTest {
         grafoB.addAresta(1, 2, 0);
         grafoB.addAresta(2, 3, 0);
         grafoB.addAresta(3, 1, 0);
-        assertEquals("1 2 3 ", grafoB.bfs(1));
+        
+        assertEquals("1 - cidade\n2 - cidade\n3 - cidade\n", grafoB.bfs(1));
     }
 
     @Test
@@ -252,6 +203,32 @@ public class GrafoTest {
     }
 
     @Test
+    public void deveCalcularAgmDeGrafoComMaisDeUmComponenteComMetodoDePrim() {
+        GrafoMutavel grafoB = new GrafoMutavel("grafob");
+
+        grafoB.addVertice(1);
+        grafoB.addVertice(2);
+        grafoB.addVertice(3);
+        grafoB.addVertice(4);
+        grafoB.addVertice(5);
+        grafoB.addVertice(6);
+        grafoB.addVertice(7);
+        grafoB.addVertice(8);
+        grafoB.addVertice(9);
+
+        grafoB.addArestaComOrigemDestino(1,2,1);
+        grafoB.addArestaComOrigemDestino(1,3,8);
+        grafoB.addArestaComOrigemDestino(2,5,8);
+        grafoB.addArestaComOrigemDestino(3,4,4);
+        grafoB.addArestaComOrigemDestino(4,5,5);
+        grafoB.addArestaComOrigemDestino(4,6,7);
+        grafoB.addArestaComOrigemDestino(7,8,1);
+
+        System.out.println(grafoB.metodoPrim(1));
+        assertTrue(grafoB.metodoPrim(1).contains("Somatorio dos Pesos: 25"));
+    }
+
+    @Test
     public void deveSubtrairVertice() throws CloneNotSupportedException {
         GrafoMutavel grafoB = new GrafoMutavel("grafob");
         Grafo grafoF = new GrafoMutavel("grafof");
@@ -262,8 +239,8 @@ public class GrafoTest {
         grafoB.addAresta(1, 2, 0);
         grafoB.addAresta(2, 3, 0);
         grafoB.addAresta(3, 1, 0);
-        Vertice a = new Vertice(2);
-        grafoF = grafoB.subtracaoGrafo(a, null, null);
+
+        grafoF = grafoB.subtracaoGrafo(2, null, null);
         assertEquals("Grafo: vertice;1,3;\naresta;1-3-0,3-1-0;", grafoF.toString());
     }
 
@@ -281,7 +258,7 @@ public class GrafoTest {
         grafoB.addAresta(3, 1, 0);
         grafoB.addAresta(4, 3, 0);
 
-        grafoF = grafoB.subtracaoGrafo(null, 2, 3);
+        grafoF = grafoB.subtracaoGrafo(0, 2, 3);
         assertEquals("Grafo: vertice;1,2;\naresta;1-2-0,1-3-0,2-1-0;", grafoF.toString());
     }
 

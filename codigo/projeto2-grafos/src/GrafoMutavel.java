@@ -27,7 +27,6 @@ public class GrafoMutavel extends Grafo {
         return this.vertices.add(id, novo);
     }    
     
-
     /**
      * Adiciona um vértice com o id especificado. Ignora a ação e retorna false se
      * já existir um vértice com este id
@@ -228,21 +227,23 @@ public class GrafoMutavel extends Grafo {
         arq.close();
     }
 
-    public String dijkstra(String origem, String destino) {
+    public String dijkstra(int idVerticeOrigem, int idVerticeDestino) {
         String retorno = "";
-        Vertice verticeOrigem = vertices.findByName(origem);
-        Vertice verticeDestino = vertices.findByName(destino);
+        Vertice verticeOrigem = vertices.find(idVerticeOrigem);
+        Vertice verticeDestino = vertices.find(idVerticeDestino);
         zerarVertices();
 
         if (verticeOrigem != null && verticeDestino != null) {
             verticeOrigem.visitar();
             LinkedList<Integer> caminhoMinimo = new LinkedList<Integer>();
             caminhoMinimo = caminhoMinimo(verticeOrigem, verticeDestino);
-                    if (caminhoMinimo != null){
+                    if (caminhoMinimo != null && caminhoMinimo.getLast() == verticeDestino.getId()) {
                         String saida = "";
                         for(int i : caminhoMinimo){
                             saida += " - " + i ;
+                            saida += " (" + vertices.find(i).getNome() + ")";
                         }
+                        
                         retorno = ("Caminho minimo: " + saida);
                     } else {
                         retorno = ("Não existe caminho para essa cidade");
@@ -328,6 +329,11 @@ public class GrafoMutavel extends Grafo {
         return stringFormatar.toString();
     }
 
+    /**
+     * Retorna o resultado da geração da arvore mínima através do método PRIM
+     * @param idVertice
+     * @return String formatada com os vértices e arestas da árvore
+     */
     public String metodoPrim(int idVertice){
         GrafoMutavel arvoreGeradoraMinima = new GrafoMutavel("Arvore Geradora Minima - Metodo Prim");
 
@@ -338,7 +344,7 @@ public class GrafoMutavel extends Grafo {
         
         ABB<Aresta> conjuntoDeArestasAgm = new ABB<>();
         ABB<Aresta> arestasDescobertasAhPercorrer = new ABB<>();
-        int pesoArestaAtual, pesoMenorAresta = 0, somatorioPesos = 0;
+        int pesoArestaAtual, pesoMenorAresta = 0, somatorioPesos = 0, qtdVerticesPercorridos = 0;
         Vertice verticeDestino = null;
 
         if(vertice != null){
@@ -346,7 +352,7 @@ public class GrafoMutavel extends Grafo {
             arvoreGeradoraMinima.addVertice(idVertice);
         }
 
-        while(conjuntoDeVerticesGrafo.size() != conjuntoDeVerticesSelecionados.size()){            
+        while(conjuntoDeVerticesGrafo.size() != qtdVerticesPercorridos){            
             Aresta arestasVerticeAtual[] = new Aresta[vertice.getAresta().size()];
             arestasVerticeAtual = vertice.getAresta().allElements(arestasVerticeAtual);
             
@@ -372,15 +378,22 @@ public class GrafoMutavel extends Grafo {
                     idVertice = idVerticeDestino;
                 }
             }
-            somatorioPesos += pesoMenorAresta;
-            pesoMenorAresta = 0;
-            
-            conjuntoDeVerticesSelecionados.add(idVertice, vertice);
-            conjuntoDeArestasAgm.add(arestaMenorPeso.getId(), arestaMenorPeso);
 
-            arvoreGeradoraMinima.addVertice(idVertice);
-            arvoreGeradoraMinima.addAresta(arestaMenorPeso.getOrigem(), arestaMenorPeso.destino(), arestaMenorPeso.peso());
-            arestasDescobertasAhPercorrer.remove(arestaMenorPeso.getId());
+            if(arestaMenorPeso != null){
+                somatorioPesos += pesoMenorAresta;
+                pesoMenorAresta = 0;
+            
+                conjuntoDeVerticesSelecionados.add(idVertice, vertice);
+                conjuntoDeArestasAgm.add(arestaMenorPeso.getId(), arestaMenorPeso);
+
+                arvoreGeradoraMinima.addVertice(idVertice);
+                arvoreGeradoraMinima.addAresta(arestaMenorPeso.getOrigem(), arestaMenorPeso.destino(), arestaMenorPeso.peso());
+                arestasDescobertasAhPercorrer.remove(arestaMenorPeso.getId());
+
+                qtdVerticesPercorridos = conjuntoDeVerticesSelecionados.size();
+            } else {                
+                qtdVerticesPercorridos = conjuntoDeVerticesGrafo.size();
+            }
         }
 
         StringBuilder stringArvoreGeradora = new StringBuilder();
