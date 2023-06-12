@@ -6,6 +6,9 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.io.EOFException;
+import java.io.FileNotFoundException;
+
 import org.junit.jupiter.api.BeforeEach;
 
 public class GrafoTest {
@@ -310,10 +313,11 @@ public class GrafoTest {
     }
 
     @Test
-    public void deveRetornarCaminhoMinimoEntreDoisVertices(){
+    public void deveRetornarCaminhoMinimoEntreDoisVertices() throws FileNotFoundException, EOFException{
         GrafoMutavel grafoMut= new GrafoMutavel("grafoMut");
 
-        assertTrue(grafoMut.dijkstra("Campinas", "Sao Paulo").contains("- 15 - 60 - 65 - 73 - 94 - 44 - 82 - 87 - 90 - 42 - 28 - 1;"));
+        grafoMut.carregar();
+        assertTrue(grafoMut.dijkstra(15, 1).contains("- 15 - 60 - 65 - 26 - 37 - 43 - 9 - 111 - 30 - 62 - 73 - 94 - 44 - 82 - 87 - 90 - 42 - 28 - 1"));
 
     }
 }
