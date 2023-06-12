@@ -213,7 +213,8 @@ public class GrafoTest {
         grafoB.addAresta(1, 2, 0);
         grafoB.addAresta(2, 3, 0);
         grafoB.addAresta(3, 1, 0);
-        assertEquals("1 2 3 ", grafoB.bfs(1));
+        
+        assertEquals("1 - cidade\n2 - cidade\n3 - cidade\n", grafoB.bfs(1));
     }
 
     @Test

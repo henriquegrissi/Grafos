@@ -186,7 +186,8 @@ public class Grafo {
      */
     public String bfs(int idVerticeInicio) {
         Queue<Vertice> queue = new LinkedList<>();
-        StringBuilder str = new StringBuilder(idVerticeInicio + " ");
+        StringBuilder str = new StringBuilder(idVerticeInicio + " - ");
+        str.append(this.vertices.find(idVerticeInicio).getNome() + "\n");
         queue.add(this.vertices.find(idVerticeInicio));
         this.vertices.find(idVerticeInicio).visitar();
 
@@ -200,7 +201,9 @@ public class Grafo {
                     this.vertices.find(vizinhosListArray[i]).visitar();
                     queue.add(this.vertices.find(vizinhosListArray[i]));
                     str.append(vizinhosListArray[i]);
-                    str.append(" ");
+                    str.append(" - ");
+                    str.append(this.vertices.find(vizinhosListArray[i]).getNome());
+                    str.append("\n");
                 }
             }
             idVerticeInicio = vizinhosListArray[0];

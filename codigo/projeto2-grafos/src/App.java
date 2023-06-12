@@ -35,7 +35,7 @@ public class App {
         limparTela();
 
         String verticeEntradaTeclado;
-        Grafo grafo = new Grafo("");
+
         GrafoMutavel grafoMutavel = new GrafoMutavel("");
 
         try {
@@ -48,7 +48,7 @@ public class App {
             grafoMutavel.salvar("Grafo cidades");
         } catch (Exception e) {
             System.out.println("Não existe grafo para ser salvo, você deve primeiro gerar o grafo " + e);
-        }        
+        }
 
         int opcao = -1;
 
@@ -57,42 +57,25 @@ public class App {
             limparTela();
             switch (opcao) {
                 case 1:
-                    if(grafoMutavel.vertices.size() == 0){
-                        System.out.println("Grafo deve ser gerado antes de executar essa função");
-                        break;
-                    }
                     verticeEntradaTeclado = "";
                     System.out.println("\nDigite o vertice: ");
                     verticeEntradaTeclado = teclado.nextLine();
-                    System.out.println("Retorno da pesquisa bfs");
-                    System.out.println(grafo.dfs(Integer.parseInt(verticeEntradaTeclado)).toString());
+                    System.out.println("Raizes da pesquisa em profundidade: ");
+                    System.out.println(grafoMutavel.dfs(Integer.parseInt(verticeEntradaTeclado)));
                     break;
 
                 case 2:
-                    if(grafoMutavel.vertices.size() == 0){
-                        System.out.println("Grafo deve ser gerado antes de executar essa função");
-                        break;
-                    }               
                     System.out.println("\nDigite o vertice: ");
                     verticeEntradaTeclado = teclado.nextLine();
-                    System.out.println("Retorno da pesquisa bfs");
-                    System.out.println(grafo.bfs(Integer.parseInt(verticeEntradaTeclado)).toString());
+                    System.out.println("Raizes da pesquisa em largura: ");
+                    System.out.println(grafoMutavel.bfs(Integer.parseInt(verticeEntradaTeclado)));
                     break;
                 
                 case 3:
-                    if(grafoMutavel.vertices.size() == 0){
-                        System.out.println("Grafo deve ser gerado antes de executar essa função");
-                        break;
-                    }
                     caminhoMinimo(grafoMutavel);
                     break;
 
                 case 4:
-                    if(grafoMutavel.vertices.size() == 0){
-                        System.out.println("Grafo deve ser gerado antes de executar essa função");
-                        break;
-                    }
-                    
                     System.out.println(grafoMutavel.stringListaVertices());
 
                     System.out.print("ID do vértice para exibir o grau e lista de vizinhos: ");
@@ -105,11 +88,6 @@ public class App {
                     break;
 
                 case 6:
-                    if(grafoMutavel.vertices.size() == 0){
-                        System.out.println("Grafo deve ser gerado antes de executar essa função");
-                        break;
-                    }
-                    
                     System.out.println(grafoMutavel.stringListaVertices());
 
                     System.out.print("ID do vértice para gerar a arvore geradora minima com metodo de PRIM: ");
