@@ -18,12 +18,14 @@ public class App {
         limparTela();
         System.out.println("Menu");
         System.out.println("==========================");
-        System.out.println("1 - Fazer pesquisa em profundidade");
-        System.out.println("2 - Fazer pesquisa em largura");
-        System.out.println("3 - Encontra o caminho minimo entre 2 vertices");
-        System.out.println("4 - Retornar o grau e vizinhos de um vertice especifico");
-        System.out.println("5 - Realizar a subtracao de um vertice/aresta");
-        System.out.println("6 - Gerar a AGM a partir de um vertice (Metodo de Prim)");
+        System.out.println("1 - Exibir grafo gerado (em texto)");
+        System.out.println("2 - Fazer pesquisa em profundidade");
+        System.out.println("3 - Fazer pesquisa em largura");
+        System.out.println("4 - Encontra o caminho minimo entre 2 vertices");
+        System.out.println("5 - Retornar o grau e vizinhos de um vertice especifico");
+        System.out.println("6 - Realizar a subtracao de uma aresta do grafo");
+        System.out.println("7 - Realizar a subtracao de um vértice do grafo");
+        System.out.println("8 - Gerar a AGM a partir de um vertice (Metodo de Prim)");
         System.out.println("0 - Sair");
         System.out.print("\nDigite sua opção: ");
         int opcao = Integer.parseInt(teclado.nextLine());
@@ -57,6 +59,9 @@ public class App {
             limparTela();
             switch (opcao) {
                 case 1:
+                    System.out.println(grafoMutavel.toString());
+                    break;
+                case 2:
                     verticeEntradaTeclado = "";
                     System.out.println("\nDigite o vertice: ");
                     verticeEntradaTeclado = teclado.nextLine();
@@ -64,18 +69,18 @@ public class App {
                     System.out.println(grafoMutavel.dfs(Integer.parseInt(verticeEntradaTeclado)));
                     break;
 
-                case 2:
+                case 3:
                     System.out.println("\nDigite o vertice: ");
                     verticeEntradaTeclado = teclado.nextLine();
                     System.out.println("Raizes da pesquisa em largura: ");
                     System.out.println(grafoMutavel.bfs(Integer.parseInt(verticeEntradaTeclado)));
                     break;
                 
-                case 3:
+                case 4:
                     caminhoMinimo(grafoMutavel);
                     break;
 
-                case 4:
+                case 5:
                     System.out.println(grafoMutavel.stringListaVertices());
 
                     System.out.print("ID do vértice para exibir o grau e lista de vizinhos: ");
@@ -83,11 +88,33 @@ public class App {
                     System.out.println(grafoMutavel.retornaGrauEVizinhosDeUmVertice(idVertice));
                     break;
 
-                case 5:
-                    //subtração de vértice aresta
+                case 6:
+                    System.out.println(grafoMutavel.toString());
+
+                    System.out.print("ID do vértice de origem da aresta a ser removida: ");
+                    Integer idVerticeOrigem = Integer.parseInt(teclado.nextLine());
+
+                    System.out.print("ID do vértice de destino da aresta a ser removida: ");
+                    Integer idVerticeDestino = Integer.parseInt(teclado.nextLine());
+
+                    grafoMutavel.subtracaoGrafo(0, idVerticeOrigem, idVerticeDestino);
+
+                    System.out.println("------------ GRAFO SEM A ARESTA " + idVerticeOrigem + "-" + idVerticeDestino + " ------------");
+                    System.out.println(grafoMutavel.toString());
                     break;
 
-                case 6:
+                case 7:
+                    System.out.println(grafoMutavel.stringListaVertices());
+                    System.out.print("ID do vértice para remover do grafo: ");
+                    
+                    int idVerticeRemover = Integer.parseInt(teclado.nextLine());
+
+                    grafoMutavel.subtracaoGrafo(idVerticeRemover, null, null);
+
+                    System.out.println("------------ GRAFO SEM O VERTICE " + idVerticeRemover + " ------------");
+                    System.out.println(grafoMutavel.toString());
+                    break;                
+                case 8:
                     System.out.println(grafoMutavel.stringListaVertices());
 
                     System.out.print("ID do vértice para gerar a arvore geradora minima com metodo de PRIM: ");

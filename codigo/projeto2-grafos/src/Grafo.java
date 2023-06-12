@@ -278,15 +278,19 @@ public class Grafo {
      * @throws CloneNotSupportedException
      * @throws IllegalArgumentException
      */
-    public Grafo subtracaoGrafo(Vertice vertice, Integer origem, Integer destino)
+    public Grafo subtracaoGrafo(int idVertice, Integer origem, Integer destino)
             throws CloneNotSupportedException, IllegalArgumentException {
         GrafoMutavel subGrafoMutavel = (GrafoMutavel) this.clone();
         Integer x = null;
         Integer y = null;
+
         if (origem != null && destino != null) 
             x = destino;
-        if (vertice != null) 
-            y = vertice.getId();
+
+        if (idVertice != 0){
+            y = idVertice;
+        } 
+            
         if(x == null && y == null)
             throw new IllegalArgumentException();
         if (x != null) {
