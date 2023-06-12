@@ -27,7 +27,6 @@ public class GrafoMutavel extends Grafo {
         return this.vertices.add(id, novo);
     }    
     
-
     /**
      * Adiciona um vértice com o id especificado. Ignora a ação e retorna false se
      * já existir um vértice com este id

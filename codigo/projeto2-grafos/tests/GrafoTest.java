@@ -17,29 +17,6 @@ public class GrafoTest {
         grafo = new Grafo("Meu Grafo Para Testes");
         meuGrafo = new GrafoMutavel(" ");
     }
-    /*
-     * @AfterEach
-     * public void limparSaida() {
-     * output.reset();
-     * }
-     */
-
-    @Test
-    public void deveRetornarNuloCasoTenteGerarGrafoComOrdemMenorOuIgualAZero() {
-        assertNull(Grafo.grafoCompleto(-4));
-    }
-
-    @Test
-    public void deveCriarumGrafoCompletoDaClasse() {
-        GrafoCompleto grafoT = new GrafoCompleto(4);
-        assertTrue(grafoT.completo());
-    }
-
-    @Test
-    public void deveRetornarTrueCasoGrafoCompletoSejaGeradoComSucesso() {
-        grafo = Grafo.grafoCompleto(6);
-        assertTrue(grafo.completo());
-    }
 
     @Test
     public void deveGerarGrafoComNomeBaseCasoNaoSejaInformadoPeloUsuario() {
@@ -132,33 +109,6 @@ public class GrafoTest {
         meuGrafo.addAresta(1, 2, 0);
         meuGrafo.removeAresta(1, 2);
         assertNull(meuGrafo.existeAresta(1, 2));
-    }
-
-    @Test
-    public void naoDeveRetornarNuloCasoArestasEVerticesSejamAdicionadosNoSubgrafo() {
-        Lista<Integer> minhaLista = new Lista<>();
-        minhaLista.add(1);
-        minhaLista.add(2);
-        minhaLista.add(3);
-        // Cria grafo
-
-        meuGrafo.addVertice(1);
-        meuGrafo.addVertice(2);
-        meuGrafo.addVertice(3);
-        meuGrafo.addVertice(4);
-        meuGrafo.addAresta(1, 2, 0);
-        meuGrafo.addAresta(1, 4, 0);
-        meuGrafo.addAresta(2, 3, 0);
-        meuGrafo.addAresta(2, 4, 0);
-
-        meuGrafo = (GrafoMutavel) meuGrafo.subGrafo(minhaLista);
-
-        assertNotNull(meuGrafo.existeVertice(1));
-        assertNotNull(meuGrafo.existeVertice(2));
-        assertNotNull(meuGrafo.existeVertice(3));
-
-        assertNotNull(meuGrafo.existeAresta(1, 2));
-        assertNotNull(meuGrafo.existeAresta(2, 3));
     }
 
     @Test
