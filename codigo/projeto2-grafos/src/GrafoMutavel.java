@@ -238,7 +238,7 @@ public class GrafoMutavel extends Grafo {
             verticeOrigem.visitar();
             LinkedList<Integer> caminhoMinimo = new LinkedList<Integer>();
             caminhoMinimo = caminhoMinimo(verticeOrigem, verticeDestino);
-                    if (caminhoMinimo != null){
+                    if (caminhoMinimo != null && caminhoMinimo.getLast() == verticeDestino.getId()) {
                         String saida = "";
                         for(int i : caminhoMinimo){
                             saida += " - " + i ;
