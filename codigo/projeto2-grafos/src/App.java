@@ -104,11 +104,14 @@ public class App {
     }
 
     private static void caminhoMinimo(GrafoMutavel grafoMutavel) {
-        System.out.println("Digite o nome do vértice de origem: ");
-        String verticeOrigem = teclado.nextLine();
-        System.out.println("Digite o nome do vértice de destino: ");
-        String verticeDestino = teclado.nextLine();
+        System.out.println(grafoMutavel.stringListaVertices());
+
+        System.out.print("Digite o ID do vertice de origem: ");
+        int idVerOrigem = Integer.parseInt(teclado.nextLine());
+
+        System.out.print("Digite o ID do vertice de destino: ");
+        int idVerDestino = Integer.parseInt(teclado.nextLine());
         
-        System.out.println(grafoMutavel.dijkstra(verticeOrigem, verticeDestino));
+        System.out.println(grafoMutavel.dijkstra(idVerOrigem, idVerDestino));
     }
 }

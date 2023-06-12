@@ -228,10 +228,10 @@ public class GrafoMutavel extends Grafo {
         arq.close();
     }
 
-    public String dijkstra(String origem, String destino) {
+    public String dijkstra(int idVerticeOrigem, int idVerticeDestino) {
         String retorno = "";
-        Vertice verticeOrigem = vertices.findByName(origem);
-        Vertice verticeDestino = vertices.findByName(destino);
+        Vertice verticeOrigem = vertices.find(idVerticeOrigem);
+        Vertice verticeDestino = vertices.find(idVerticeDestino);
         zerarVertices();
 
         if (verticeOrigem != null && verticeDestino != null) {
