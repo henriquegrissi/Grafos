@@ -253,7 +253,7 @@ public class GrafoMutavel extends Grafo {
         return retorno;
     } 
 
-    public LinkedList<Integer> caminhoMinimo(Vertice verticeOrigem, Vertice verticeDestino) { 
+    private LinkedList<Integer> caminhoMinimo(Vertice verticeOrigem, Vertice verticeDestino) { 
         LinkedList<Integer> verticesVizinhos = new LinkedList<Integer>();
         int tamanho = Integer.MAX_VALUE;
 

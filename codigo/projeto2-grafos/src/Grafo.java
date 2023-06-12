@@ -1,10 +1,6 @@
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Stack;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import java.util.stream.Stream;
 
 /** 
  * MIT License
@@ -214,7 +210,7 @@ public class Grafo {
      * @param str
      * @param i
      */
-    public int search_dfs(Integer id) {
+    private int search_dfs(Integer id) {
         // Lista<Integer> vizinhos = this.vertices.find(id).vizinhos();
         Integer[] arrayVizinhos = new Integer[this.vertices.find(id).vizinhos().size()];
         arrayVizinhos = this.vertices.find(id).vizinhos().allElements(arrayVizinhos);
